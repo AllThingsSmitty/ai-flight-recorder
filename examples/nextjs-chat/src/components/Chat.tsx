@@ -42,7 +42,8 @@ export function Chat() {
         throw new Error(text || "Request failed");
       }
 
-      const reader = response.body!.getReader();
+      if (!response.body) throw new Error("No response body");
+      const reader = response.body.getReader();
       const decoder = new TextDecoder();
 
       setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
