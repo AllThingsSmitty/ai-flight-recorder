@@ -1,0 +1,42 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+.next
+out
+
+# TypeScript incremental build cache
+*.tsbuildinfo
+
+# Next.js auto-generated (recreated on next dev/build)
+next-env.d.ts
+
+# Turborepo cache
+.turbo
+
+# Environment variables — never commit secrets
+.env
+.env.local
+.env.*.local
+# Allow checked-in example files
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Vercel
+.vercel
+
+# Editor — personal settings only; commit .vscode/extensions.json if desired
+.vscode/settings.json
+.idea/
+*.suo
+*.user

@@ -1,0 +1,23 @@
+{
+  "name": "ai-flight-recorder",
+  "private": true,
+  "packageManager": "pnpm@10.15.0",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "smoke": "tsx --tsconfig scripts/tsconfig.json scripts/smoke.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9",
+    "eslint": "^9",
+    "eslint-plugin-react": "^7.37",
+    "eslint-plugin-react-hooks": "^5",
+    "tsx": "^4",
+    "turbo": "^2",
+    "typescript": "^5",
+    "typescript-eslint": "^8"
+  }
+}

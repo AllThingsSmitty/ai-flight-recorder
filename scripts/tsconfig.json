@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2022",
+    "strict": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@flight-recorder/sdk": ["../packages/sdk/src/index.ts"],
+      "@flight-recorder/core": ["../packages/core/src/index.ts"]
+    }
+  },
+  "include": ["./**/*.ts"]
+}
