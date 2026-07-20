@@ -6,7 +6,7 @@ AI Flight Recorder is an open-source developer tool for recording, replaying, an
 
 Instead of piecing together console logs after the fact, you drop in a one-line SDK wrapper and get a full DevTools-style timeline you can pause, rewind, and hand off to a teammate as a `.flight` file.
 
-[![CI](https://github.com/YOUR_USERNAME/ai-flight-recorder/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/ai-flight-recorder/actions/workflows/ci.yml)
+[![CI](https://github.com/AllThingsSmitty/ai-flight-recorder/actions/workflows/ci.yml/badge.svg)](https://github.com/AllThingsSmitty/ai-flight-recorder/actions/workflows/ci.yml)
 
 ![AI Flight Recorder](.github/assets/screenshot-timeline.png)
 
