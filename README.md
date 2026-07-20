@@ -6,6 +6,8 @@ AI Flight Recorder is an open-source developer tool for recording, replaying, an
 
 Instead of piecing together console logs after the fact, you drop in a one-line SDK wrapper and get a full DevTools-style timeline you can pause, rewind, and hand off to a teammate as a `.flight` file.
 
+[![CI](https://github.com/YOUR_USERNAME/ai-flight-recorder/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/ai-flight-recorder/actions/workflows/ci.yml)
+
 ![AI Flight Recorder](.github/assets/screenshot-timeline.png)
 
 ---
@@ -37,7 +39,8 @@ ai-flight-recorder/
 │   └── types/             Shared TypeScript types (future)
 ├── scripts/
 │   └── smoke.ts           SDK integration smoke test
-└── examples/              (coming soon)
+└── examples/
+    └── nextjs-chat/       Full-stack chat app — OpenAI streaming + .flight export
 ```
 
 ---
@@ -109,7 +112,7 @@ import OpenAI from "openai";
 import { FlightRecorder, wrapOpenAI } from "@flight-recorder/sdk";
 
 const fr = new FlightRecorder();
-const openai = wrapOpenAI(new OpenAI(), fr._recorder);
+const openai = wrapOpenAI(new OpenAI(), fr.recorder);
 
 fr.startSession({ label: "chat" });
 
@@ -128,7 +131,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { FlightRecorder, wrapAnthropic } from "@flight-recorder/sdk";
 
 const fr = new FlightRecorder();
-const client = wrapAnthropic(new Anthropic(), fr._recorder);
+const client = wrapAnthropic(new Anthropic(), fr.recorder);
 
 fr.startSession({ label: "claude-chat" });
 
@@ -151,7 +154,7 @@ const fr = new FlightRecorder();
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 const model = wrapGeminiModel(
   genAI.getGenerativeModel({ model: "gemini-1.5-pro" }),
-  fr._recorder,
+  fr.recorder,
 );
 
 fr.startSession({ label: "gemini-chat" });
@@ -301,6 +304,47 @@ The DevTools app (`apps/devtools`) is a Next.js application providing a visual i
 
 ---
 
+## Example: Next.js Chat
+
+`examples/nextjs-chat` is a minimal Next.js app showing a full end-to-end integration — streaming chat with GPT-4o-mini, automatic session recording, and `.flight` export.
+
+### Setup
+
+```bash
+cd examples/nextjs-chat
+cp .env.example .env.local
+```
+
+Edit `.env.local` and add your OpenAI API key:
+
+```
+OPENAI_API_KEY=sk-...
+```
+
+### Run
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). Chat with the assistant, then click **Export .flight** in the header to download your session.
+
+### Replay in DevTools
+
+Open the DevTools app (`pnpm dev` from the repo root), click **Import** in the toolbar, and select the `.flight` file. Your session loads instantly — timeline, waterfall, cost breakdown, and full streaming replay.
+
+### How it works
+
+The example wires up three things from the SDK:
+
+- `FlightRecorder` — starts a session per request
+- `wrapOpenAI` — intercepts the OpenAI client and records every prompt, token, and completion automatically
+- `serializeSession` — serializes the ended session to JSON for download
+
+To use Anthropic or Gemini instead, swap `wrapOpenAI` for `wrapAnthropic` or `wrapGeminiModel` in `src/app/api/chat/route.ts`.
+
+---
+
 ## Development
 
 ```bash
@@ -365,7 +409,7 @@ export class MyPlugin implements Plugin {
 - [ ] Cloud sync and session sharing
 - [ ] OpenTelemetry export adapter
 - [ ] VS Code extension
-- [ ] `examples/nextjs-chat` reference implementation
+- [x] `examples/nextjs-chat` reference implementation
 
 ---
 
