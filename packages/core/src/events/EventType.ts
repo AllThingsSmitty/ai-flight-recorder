@@ -11,4 +11,6 @@ export type EventType =
   | "mcp-server-disconnected"
   | "mcp-tools-listed"
   | "mcp-tool-call"
-  | "mcp-tool-result";
+  | "mcp-tool-result"
+  | "retrieval-query"
+  | "retrieval-result";

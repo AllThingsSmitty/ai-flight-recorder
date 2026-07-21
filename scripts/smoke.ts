@@ -288,10 +288,63 @@ test("MCP session round-trips through serialization", () => {
   );
 });
 
-// ── Test 6: Replay engine ─────────────────────────────────────────────────────
+// ── Test 6: RAG / retrieval events ───────────────────────────────────────────
+
+console.log(`\n${HEAD}6. RAG / retrieval events${RESET}`);
+
+const ragTransport = new InMemoryTransport();
+const ragFr = new FlightRecorder({ transport: ragTransport });
+
+test("record() accepts retrieval-query", () => {
+  ragFr.startSession({ label: "rag-smoke" });
+  ragFr.record({
+    type: "retrieval-query",
+    query: "What is the capital of France?",
+    store: "pinecone",
+    topK: 5,
+  });
+  assert.equal(ragFr.session?.events.length, 2); // session-started + retrieval-query
+});
+
+test("record() accepts retrieval-result", () => {
+  ragFr.record({
+    type: "retrieval-result",
+    store: "pinecone",
+    chunks: [
+      {
+        documentId: "doc_001",
+        score: 0.97,
+        content: "Paris is the capital and most populous city of France.",
+        metadata: { source: "wikipedia" },
+      },
+      {
+        documentId: "doc_002",
+        score: 0.88,
+        content: "France's capital city Paris has been the country's center since medieval times.",
+      },
+    ],
+    durationMs: 42,
+  });
+  assert.equal(ragFr.session?.events.length, 3); // + retrieval-result
+});
+
+test("RAG session round-trips through serialization", () => {
+  const ragEnded = ragFr.endSession();
+  // session-started + 2 RAG events + session-ended
+  assert.equal(ragEnded.events.length, 4);
+  const ragJson = serializeSession(ragEnded);
+  const restored = deserializeSession(ragJson);
+  assert.equal(restored.events.length, 4);
+  assert.equal(
+    restored.events.filter((e) => e.type.startsWith("retrieval-")).length,
+    2
+  );
+});
+
+// ── Test 7: Replay engine ─────────────────────────────────────────────────────
 
 async function runReplayTests() {
-  console.log(`\n${HEAD}6. Replay engine${RESET}`);
+  console.log(`\n${HEAD}7. Replay engine${RESET}`);
 
   await testAsync("plays all events and fires 'ended'", () => {
     const replay = fr.createReplay(ended);
