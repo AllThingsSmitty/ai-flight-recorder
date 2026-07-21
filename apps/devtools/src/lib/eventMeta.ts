@@ -100,6 +100,20 @@ const META: Record<EventType, EventMeta> = {
     borderColor: "border-emerald-700",
     dotColor: "#34d399",
   },
+  "retrieval-query": {
+    label: "Retrieval Query",
+    color: "text-fuchsia-300",
+    bgColor: "bg-fuchsia-950",
+    borderColor: "border-fuchsia-700",
+    dotColor: "#e879f9",
+  },
+  "retrieval-result": {
+    label: "Retrieval Result",
+    color: "text-fuchsia-300",
+    bgColor: "bg-fuchsia-950",
+    borderColor: "border-fuchsia-700",
+    dotColor: "#e879f9",
+  },
 };
 
 export function getEventMeta(type: EventType): EventMeta {
@@ -134,6 +148,10 @@ export function eventSummary(event: { type: EventType; [key: string]: unknown })
       return `${event.serverName}/${event.toolName}(…)`;
     case "mcp-tool-result":
       return `${event.success ? "✓" : "✗"} ${event.toolCallId} · ${event.durationMs ?? 0}ms`;
+    case "retrieval-query":
+      return truncate(event.query as string, 72);
+    case "retrieval-result":
+      return `${(event.chunks as unknown[]).length} chunk(s)${event.store ? ` · ${event.store}` : ""} · ${event.durationMs ?? 0}ms`;
     default:
       return event.type;
   }

@@ -9,6 +9,8 @@ import { PromptEvent } from "./PromptEvent";
 import { SessionEndedEvent } from "./SessionEndedEvent";
 import { SessionStartedEvent } from "./SessionStartedEvent";
 import { TokenEvent } from "./TokenEvent";
+import { RetrievalQueryEvent } from "./RetrievalQueryEvent";
+import { RetrievalResultEvent } from "./RetrievalResultEvent";
 import { ToolCallEvent } from "./ToolCallEvent";
 import { ToolResultEvent } from "./ToolResultEvent";
 
@@ -25,4 +27,6 @@ export type AIEvent =
   | McpServerDisconnectedEvent
   | McpToolsListedEvent
   | McpToolCallEvent
-  | McpToolResultEvent;
+  | McpToolResultEvent
+  | RetrievalQueryEvent
+  | RetrievalResultEvent;

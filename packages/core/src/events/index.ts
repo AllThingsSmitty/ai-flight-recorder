@@ -15,3 +15,5 @@ export * from "./McpServerDisconnectedEvent";
 export * from "./McpToolsListedEvent";
 export * from "./McpToolCallEvent";
 export * from "./McpToolResultEvent";
+export * from "./RetrievalQueryEvent";
+export * from "./RetrievalResultEvent";
