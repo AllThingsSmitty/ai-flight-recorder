@@ -341,10 +341,75 @@ test("RAG session round-trips through serialization", () => {
   );
 });
 
-// ── Test 7: Replay engine ─────────────────────────────────────────────────────
+// ── Test 7: Agent action events ───────────────────────────────────────────────
+
+console.log(`\n${HEAD}7. Agent action events${RESET}`);
+
+const agentTransport = new InMemoryTransport();
+const agentFr = new FlightRecorder({ transport: agentTransport });
+
+test("record() accepts agent-run-started", () => {
+  agentFr.startSession({ label: "agent-smoke" });
+  agentFr.record({
+    type: "agent-run-started",
+    agentName: "research-agent",
+    goal: "Find recent papers on RAG performance",
+    input: { topic: "RAG", limit: 10 },
+  });
+  assert.equal(agentFr.session?.events.length, 2); // session-started + agent-run-started
+});
+
+test("record() accepts agent-step", () => {
+  agentFr.record({
+    type: "agent-step",
+    agentName: "research-agent",
+    stepIndex: 0,
+    thought: "I should search arxiv for recent RAG papers",
+    action: "search_arxiv",
+    actionInput: { query: "RAG retrieval augmented generation 2024" },
+  });
+  assert.equal(agentFr.session?.events.length, 3);
+});
+
+test("record() accepts agent-handoff", () => {
+  agentFr.record({
+    type: "agent-handoff",
+    fromAgent: "research-agent",
+    toAgent: "summarizer-agent",
+    reason: "Research complete, summarization needed",
+    input: { papers: ["paper_001", "paper_002"] },
+  });
+  assert.equal(agentFr.session?.events.length, 4);
+});
+
+test("record() accepts agent-run-ended", () => {
+  agentFr.record({
+    type: "agent-run-ended",
+    agentName: "research-agent",
+    outcome: "handoff",
+    durationMs: 3200,
+    iterations: 3,
+  });
+  assert.equal(agentFr.session?.events.length, 5);
+});
+
+test("agent session round-trips through serialization", () => {
+  const agentEnded = agentFr.endSession();
+  // session-started + 4 agent events + session-ended
+  assert.equal(agentEnded.events.length, 6);
+  const agentJson = serializeSession(agentEnded);
+  const restored = deserializeSession(agentJson);
+  assert.equal(restored.events.length, 6);
+  assert.equal(
+    restored.events.filter((e) => e.type.startsWith("agent-")).length,
+    4
+  );
+});
+
+// ── Test 8: Replay engine ─────────────────────────────────────────────────────
 
 async function runReplayTests() {
-  console.log(`\n${HEAD}7. Replay engine${RESET}`);
+  console.log(`\n${HEAD}8. Replay engine${RESET}`);
 
   await testAsync("plays all events and fires 'ended'", () => {
     const replay = fr.createReplay(ended);
