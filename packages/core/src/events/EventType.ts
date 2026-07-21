@@ -6,4 +6,9 @@ export type EventType =
   | "tool-call"
   | "tool-result"
   | "completion"
-  | "error";
+  | "error"
+  | "mcp-server-connected"
+  | "mcp-server-disconnected"
+  | "mcp-tools-listed"
+  | "mcp-tool-call"
+  | "mcp-tool-result";

@@ -65,6 +65,41 @@ const META: Record<EventType, EventMeta> = {
     borderColor: "border-red-700",
     dotColor: "#f87171",
   },
+  "mcp-server-connected": {
+    label: "MCP Connected",
+    color: "text-teal-300",
+    bgColor: "bg-teal-950",
+    borderColor: "border-teal-700",
+    dotColor: "#2dd4bf",
+  },
+  "mcp-server-disconnected": {
+    label: "MCP Disconnected",
+    color: "text-teal-300",
+    bgColor: "bg-teal-950",
+    borderColor: "border-teal-700",
+    dotColor: "#2dd4bf",
+  },
+  "mcp-tools-listed": {
+    label: "MCP Tools",
+    color: "text-teal-300",
+    bgColor: "bg-teal-950",
+    borderColor: "border-teal-700",
+    dotColor: "#2dd4bf",
+  },
+  "mcp-tool-call": {
+    label: "MCP Tool Call",
+    color: "text-amber-300",
+    bgColor: "bg-amber-950",
+    borderColor: "border-amber-700",
+    dotColor: "#fbbf24",
+  },
+  "mcp-tool-result": {
+    label: "MCP Tool Result",
+    color: "text-emerald-300",
+    bgColor: "bg-emerald-950",
+    borderColor: "border-emerald-700",
+    dotColor: "#34d399",
+  },
 };
 
 export function getEventMeta(type: EventType): EventMeta {
@@ -89,6 +124,16 @@ export function eventSummary(event: { type: EventType; [key: string]: unknown })
       return truncate(event.response as string, 72);
     case "error":
       return event.message as string;
+    case "mcp-server-connected":
+      return `${event.serverName} connected via ${event.transport}`;
+    case "mcp-server-disconnected":
+      return `${event.serverName} disconnected${event.reason ? ` · ${event.reason}` : ""}`;
+    case "mcp-tools-listed":
+      return `${event.serverName} · ${(event.tools as unknown[]).length} tool(s)`;
+    case "mcp-tool-call":
+      return `${event.serverName}/${event.toolName}(…)`;
+    case "mcp-tool-result":
+      return `${event.success ? "✓" : "✗"} ${event.toolCallId} · ${event.durationMs ?? 0}ms`;
     default:
       return event.type;
   }

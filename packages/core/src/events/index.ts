@@ -10,3 +10,8 @@ export * from "./ToolCallEvent";
 export * from "./ToolResultEvent";
 export * from "./CompletionEvent";
 export * from "./ErrorEvent";
+export * from "./McpServerConnectedEvent";
+export * from "./McpServerDisconnectedEvent";
+export * from "./McpToolsListedEvent";
+export * from "./McpToolCallEvent";
+export * from "./McpToolResultEvent";
