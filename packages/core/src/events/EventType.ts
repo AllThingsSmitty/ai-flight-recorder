@@ -13,4 +13,8 @@ export type EventType =
   | "mcp-tool-call"
   | "mcp-tool-result"
   | "retrieval-query"
-  | "retrieval-result";
+  | "retrieval-result"
+  | "agent-run-started"
+  | "agent-run-ended"
+  | "agent-step"
+  | "agent-handoff";

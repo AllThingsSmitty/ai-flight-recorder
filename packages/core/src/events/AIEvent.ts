@@ -9,6 +9,10 @@ import { PromptEvent } from "./PromptEvent";
 import { SessionEndedEvent } from "./SessionEndedEvent";
 import { SessionStartedEvent } from "./SessionStartedEvent";
 import { TokenEvent } from "./TokenEvent";
+import { AgentHandoffEvent } from "./AgentHandoffEvent";
+import { AgentRunEndedEvent } from "./AgentRunEndedEvent";
+import { AgentRunStartedEvent } from "./AgentRunStartedEvent";
+import { AgentStepEvent } from "./AgentStepEvent";
 import { RetrievalQueryEvent } from "./RetrievalQueryEvent";
 import { RetrievalResultEvent } from "./RetrievalResultEvent";
 import { ToolCallEvent } from "./ToolCallEvent";
@@ -29,4 +33,8 @@ export type AIEvent =
   | McpToolCallEvent
   | McpToolResultEvent
   | RetrievalQueryEvent
-  | RetrievalResultEvent;
+  | RetrievalResultEvent
+  | AgentRunStartedEvent
+  | AgentRunEndedEvent
+  | AgentStepEvent
+  | AgentHandoffEvent;

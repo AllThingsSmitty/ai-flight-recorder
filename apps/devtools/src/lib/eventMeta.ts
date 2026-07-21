@@ -114,6 +114,34 @@ const META: Record<EventType, EventMeta> = {
     borderColor: "border-fuchsia-700",
     dotColor: "#e879f9",
   },
+  "agent-run-started": {
+    label: "Agent Start",
+    color: "text-orange-300",
+    bgColor: "bg-orange-950",
+    borderColor: "border-orange-700",
+    dotColor: "#fb923c",
+  },
+  "agent-run-ended": {
+    label: "Agent End",
+    color: "text-orange-300",
+    bgColor: "bg-orange-950",
+    borderColor: "border-orange-700",
+    dotColor: "#fb923c",
+  },
+  "agent-step": {
+    label: "Agent Step",
+    color: "text-orange-300",
+    bgColor: "bg-orange-950",
+    borderColor: "border-orange-700",
+    dotColor: "#fb923c",
+  },
+  "agent-handoff": {
+    label: "Agent Handoff",
+    color: "text-orange-300",
+    bgColor: "bg-orange-950",
+    borderColor: "border-orange-700",
+    dotColor: "#fb923c",
+  },
 };
 
 export function getEventMeta(type: EventType): EventMeta {
@@ -152,6 +180,14 @@ export function eventSummary(event: { type: EventType; [key: string]: unknown })
       return truncate(event.query as string, 72);
     case "retrieval-result":
       return `${(event.chunks as unknown[]).length} chunk(s)${event.store ? ` · ${event.store}` : ""} · ${event.durationMs ?? 0}ms`;
+    case "agent-run-started":
+      return `${event.agentName}${event.goal ? ` · ${truncate(event.goal as string, 48)}` : ""}`;
+    case "agent-run-ended":
+      return `${event.agentName} · ${event.outcome}${event.durationMs ? ` · ${event.durationMs}ms` : ""}`;
+    case "agent-step":
+      return `${event.agentName} · step ${event.stepIndex}${event.action ? ` · ${event.action}` : ""}`;
+    case "agent-handoff":
+      return `${event.fromAgent} → ${event.toAgent}${event.reason ? ` · ${event.reason}` : ""}`;
     default:
       return event.type;
   }
