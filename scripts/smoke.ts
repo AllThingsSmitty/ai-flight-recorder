@@ -12,6 +12,7 @@ import {
   ConsoleLogPlugin,
   InMemoryTransport,
   HttpTransport,
+  toOtlp,
   serializeSession,
   deserializeSession,
   parseFlightFile,
@@ -421,7 +422,45 @@ test("HttpTransport constructs with url and apiKey", () => {
   assert.ok(t);
 });
 
-// ── Test 10: Replay engine ────────────────────────────────────────────────────
+// ── Test 10: OpenTelemetry export ─────────────────────────────────────────────
+
+console.log(`\n${HEAD}10. OpenTelemetry export${RESET}`);
+
+test("toOtlp() returns a valid OTLP payload structure", () => {
+  const payload = toOtlp(ended);
+  assert.ok(Array.isArray(payload.resourceSpans));
+  assert.equal(payload.resourceSpans.length, 1);
+  assert.ok(Array.isArray(payload.resourceSpans[0].scopeSpans));
+  assert.ok(Array.isArray(payload.resourceSpans[0].scopeSpans[0].spans));
+});
+
+test("toOtlp() root span traceId is session.id without dashes", () => {
+  const payload = toOtlp(ended);
+  const rootSpan = payload.resourceSpans[0].scopeSpans[0].spans[0];
+  assert.equal(rootSpan.traceId, ended.id.replace(/-/g, ""));
+});
+
+test("toOtlp() span count equals 1 root + all events", () => {
+  const payload = toOtlp(ended);
+  const spans = payload.resourceSpans[0].scopeSpans[0].spans;
+  // 1 root span + one span per event
+  assert.equal(spans.length, 1 + ended.events.length);
+});
+
+test("toOtlp() error event produces a span with error status", () => {
+  const fr2 = new FlightRecorder();
+  fr2.startSession();
+  fr2.record({ type: "error", message: "model overloaded", code: "503" });
+  const errorSession = fr2.endSession();
+  const payload = toOtlp(errorSession);
+  const spans = payload.resourceSpans[0].scopeSpans[0].spans;
+  const errorSpan = spans.find((sp) => sp.name === "ai.error");
+  assert.ok(errorSpan, "ai.error span should exist");
+  assert.equal(errorSpan!.status.code, 2);
+  assert.equal(errorSpan!.status.message, "model overloaded");
+});
+
+// ── Test 11: Replay engine ────────────────────────────────────────────────────
 
 async function runAsyncTests() {
   await testAsync("HttpTransport.save() rejects on network failure", async () => {
@@ -436,7 +475,7 @@ async function runAsyncTests() {
     );
   });
 
-  console.log(`\n${HEAD}10. Replay engine${RESET}`);
+  console.log(`\n${HEAD}11. Replay engine${RESET}`);
 
   await testAsync("plays all events and fires 'ended'", () => {
     const replay = fr.createReplay(ended);
