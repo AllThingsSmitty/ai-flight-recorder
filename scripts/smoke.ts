@@ -213,8 +213,85 @@ test("serializeSession() rejects in-progress sessions", () => {
 
 // ── Test 5: Replay engine ─────────────────────────────────────────────────────
 
+// ── Test 5: MCP events ────────────────────────────────────────────────────────
+
+console.log(`\n${HEAD}5. MCP events${RESET}`);
+
+const mcpTransport = new InMemoryTransport();
+const mcpFr = new FlightRecorder({ transport: mcpTransport });
+
+test("record() accepts mcp-server-connected", () => {
+  mcpFr.startSession({ label: "mcp-smoke" });
+  mcpFr.record({
+    type: "mcp-server-connected",
+    serverName: "filesystem",
+    serverVersion: "1.0.0",
+    transport: "stdio",
+  });
+  assert.equal(mcpFr.session?.events.length, 2); // session-started + mcp-server-connected
+});
+
+test("record() accepts mcp-tools-listed", () => {
+  mcpFr.record({
+    type: "mcp-tools-listed",
+    serverName: "filesystem",
+    tools: [
+      { name: "read_file", description: "Read a file from disk" },
+      { name: "write_file", description: "Write content to a file" },
+    ],
+  });
+  assert.equal(mcpFr.session?.events.length, 3);
+});
+
+test("record() accepts mcp-tool-call", () => {
+  mcpFr.record({
+    type: "mcp-tool-call",
+    serverName: "filesystem",
+    toolName: "read_file",
+    toolCallId: "mcp_call_001",
+    input: { path: "/tmp/hello.txt" },
+  });
+  assert.equal(mcpFr.session?.events.length, 4);
+});
+
+test("record() accepts mcp-tool-result", () => {
+  mcpFr.record({
+    type: "mcp-tool-result",
+    serverName: "filesystem",
+    toolCallId: "mcp_call_001",
+    output: "Hello, world!",
+    success: true,
+    durationMs: 12,
+  });
+  assert.equal(mcpFr.session?.events.length, 5);
+});
+
+test("record() accepts mcp-server-disconnected", () => {
+  mcpFr.record({
+    type: "mcp-server-disconnected",
+    serverName: "filesystem",
+    reason: "session ended",
+  });
+  assert.equal(mcpFr.session?.events.length, 6);
+});
+
+test("MCP session round-trips through serialization", () => {
+  const mcpEnded = mcpFr.endSession();
+  // session-started + 5 MCP events + session-ended
+  assert.equal(mcpEnded.events.length, 7);
+  const mcpJson = serializeSession(mcpEnded);
+  const restored = deserializeSession(mcpJson);
+  assert.equal(restored.events.length, 7);
+  assert.equal(
+    restored.events.filter((e) => e.type.startsWith("mcp-")).length,
+    5
+  );
+});
+
+// ── Test 6: Replay engine ─────────────────────────────────────────────────────
+
 async function runReplayTests() {
-  console.log(`\n${HEAD}5. Replay engine${RESET}`);
+  console.log(`\n${HEAD}6. Replay engine${RESET}`);
 
   await testAsync("plays all events and fires 'ended'", () => {
     const replay = fr.createReplay(ended);
