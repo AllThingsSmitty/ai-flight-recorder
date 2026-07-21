@@ -11,6 +11,7 @@ import {
   FlightRecorder,
   ConsoleLogPlugin,
   InMemoryTransport,
+  HttpTransport,
   serializeSession,
   deserializeSession,
   parseFlightFile,
@@ -406,10 +407,36 @@ test("agent session round-trips through serialization", () => {
   );
 });
 
-// ── Test 8: Replay engine ─────────────────────────────────────────────────────
+// ── Test 9: HttpTransport ─────────────────────────────────────────────────────
 
-async function runReplayTests() {
-  console.log(`\n${HEAD}8. Replay engine${RESET}`);
+console.log(`\n${HEAD}9. HttpTransport${RESET}`);
+
+test("HttpTransport constructs with url", () => {
+  const t = new HttpTransport({ url: "https://api.example.com/sessions" });
+  assert.ok(t);
+});
+
+test("HttpTransport constructs with url and apiKey", () => {
+  const t = new HttpTransport({ url: "https://api.example.com/sessions", apiKey: "sk-test" });
+  assert.ok(t);
+});
+
+// ── Test 10: Replay engine ────────────────────────────────────────────────────
+
+async function runAsyncTests() {
+  await testAsync("HttpTransport.save() rejects on network failure", async () => {
+    const t = new HttpTransport({ url: "http://127.0.0.1:1/sessions" });
+    const fr2 = new FlightRecorder();
+    fr2.startSession({ label: "http-error-test" });
+    fr2.record({ type: "prompt", model: "gpt-4o", prompt: "test" });
+    const ended = fr2.endSession();
+    await assert.rejects(
+      () => t.save(ended) as Promise<void>,
+      /ECONNREFUSED|fetch failed|Failed to fetch/
+    );
+  });
+
+  console.log(`\n${HEAD}10. Replay engine${RESET}`);
 
   await testAsync("plays all events and fires 'ended'", () => {
     const replay = fr.createReplay(ended);
@@ -470,7 +497,7 @@ async function runReplayTests() {
   }
 }
 
-runReplayTests().catch((err) => {
+runAsyncTests().catch((err) => {
   console.error(err);
   process.exit(1);
 });
