@@ -403,11 +403,11 @@ export class MyPlugin implements Plugin {
 
 ## Roadmap
 
-- [ ] MCP (Model Context Protocol) event types
-- [ ] RAG / retrieval event types
-- [ ] Agent action events
-- [ ] Cloud sync and session sharing
-- [ ] OpenTelemetry export adapter
+- [x] MCP (Model Context Protocol) event types
+- [x] RAG / retrieval event types
+- [x] Agent action events
+- [x] Cloud sync and session sharing
+- [x] OpenTelemetry export adapter
 - [ ] VS Code extension
 - [x] `examples/nextjs-chat` reference implementation
 
