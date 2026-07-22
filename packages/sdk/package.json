@@ -1,7 +1,7 @@
 {
   "name": "@flight-recorder/sdk",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.1.0",
+  "description": "SDK and provider adapters for AI Flight Recorder — wrap OpenAI, Anthropic, and Gemini clients to record AI sessions",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -15,9 +15,38 @@
       "types": "./dist/node.d.ts"
     }
   },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "ai",
+    "llm",
+    "observability",
+    "debugging",
+    "recording",
+    "sdk",
+    "adapter",
+    "openai",
+    "anthropic",
+    "gemini",
+    "mcp",
+    "flight-recorder"
+  ],
+  "author": "Matt Smith",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AllThingsSmitty/ai-flight-recorder.git",
+    "directory": "packages/sdk"
+  },
+  "homepage": "https://github.com/AllThingsSmitty/ai-flight-recorder#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc --build",
     "dev": "tsc --build --watch",
+    "prepublishOnly": "pnpm build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "clean": "rm -rf dist"
