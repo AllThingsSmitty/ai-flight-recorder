@@ -1,0 +1,55 @@
+{
+  "name": "flight-recorder",
+  "displayName": "AI Flight Recorder",
+  "description": "View and replay .flight session recordings in VS Code",
+  "version": "0.0.1",
+  "publisher": "AllThingsSmitty",
+  "private": true,
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "llm",
+    "flight recorder",
+    "openai",
+    "anthropic",
+    "devtools"
+  ],
+  "icon": "icon.png",
+  "main": "./out/extension.js",
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "flightRecorder.flightEditor",
+        "displayName": "Flight Recorder",
+        "selector": [
+          {
+            "filenamePattern": "*.flight"
+          }
+        ],
+        "priority": "default"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "dev": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.webview.json",
+    "lint": "eslint src",
+    "vscode:prepublish": "node esbuild.mjs --minify"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/node": "^20",
+    "@types/vscode": "^1.90.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@flight-recorder/core": "workspace:*"
+  }
+}
