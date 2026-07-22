@@ -10,8 +10,6 @@ Instead of piecing together console logs after the fact, you drop in a one-line 
 
 ![AI Flight Recorder](.github/assets/screenshot-timeline.png)
 
----
-
 ## Features
 
 - **Session recording** — capture every prompt, token, tool call, and completion as a structured event stream
@@ -23,8 +21,6 @@ Instead of piecing together console logs after the fact, you drop in a one-line 
 - **`.flight` Export/Import** — share a session as a portable file another developer can replay locally
 - **Plugin System** — hook into the recorder lifecycle with custom observers
 - **Transport System** — plug in any storage backend (in-memory, filesystem, your own API)
-
----
 
 ## Repository Structure
 
@@ -42,8 +38,6 @@ ai-flight-recorder/
 └── examples/
     └── nextjs-chat/       Full-stack chat app — OpenAI streaming + .flight export
 ```
-
----
 
 ## Getting Started
 
@@ -73,8 +67,6 @@ pnpm smoke
 ```
 
 Exercises recording, plugins, transport, serialization, and replay end-to-end. All 19 assertions should pass.
-
----
 
 ## SDK Usage
 
@@ -240,8 +232,6 @@ class MyApiTransport implements Transport {
 const fr = new FlightRecorder({ transport: new MyApiTransport() });
 ```
 
----
-
 ## `.flight` File Format
 
 Sessions can be exported as portable `.flight` files (JSON with a version envelope):
@@ -278,8 +268,6 @@ writeFileSync("bug-123.flight", serializeSession(endedSession));
 const session = deserializeSession(readFileSync("bug-123.flight", "utf-8"));
 ```
 
----
-
 ## DevTools Application
 
 The DevTools app (`apps/devtools`) is a Next.js application providing a visual interface for recorded sessions.
@@ -301,8 +289,6 @@ The DevTools app (`apps/devtools`) is a Next.js application providing a visual i
 
 - Filter by event type using the chip row (Prompt, Token, Tool, Result, Completion, Error)
 - Text search across event content
-
----
 
 ## Example: Next.js Chat
 
@@ -342,8 +328,6 @@ The example wires up three things from the SDK:
 - `serializeSession` — serializes the ended session to JSON for download
 
 To use Anthropic or Gemini instead, swap `wrapOpenAI` for `wrapAnthropic` or `wrapGeminiModel` in `src/app/api/chat/route.ts`.
-
----
 
 ## Development
 
@@ -388,43 +372,10 @@ export class MyPlugin implements Plugin {
 }
 ```
 
----
-
-## Tech Stack
-
-- **TypeScript** — strict mode throughout
-- **pnpm workspaces** + **Turborepo** — monorepo with incremental builds
-- **Next.js 15** (App Router) — DevTools application
-- **Tailwind CSS v3** — dark-theme design system
-- **Zustand** — session, replay, and search state
-- **ESLint 9** (flat config) — typescript-eslint + react-hooks rules
-
----
-
-## Roadmap
-
-- [x] MCP (Model Context Protocol) event types
-- [x] RAG / retrieval event types
-- [x] Agent action events
-- [x] Cloud sync and session sharing
-- [x] OpenTelemetry export adapter
-- [ ] VS Code extension
-- [x] `examples/nextjs-chat` reference implementation
-
----
-
 ## Contributing
 
-Contributions are welcome. Please open an issue before submitting a pull request for non-trivial changes.
-
-When adding code, follow the existing patterns:
-
-- No comments explaining what code does — only why when non-obvious
-- No backwards-compatibility shims for unused code paths
-- Provider adapters must not hard-depend on the provider SDK (`import type` only at most)
-
----
+Contributions are welcome! Please read the [Contributing Guidelines](CONTRIBUTING.md) before opening a pull request.
 
 ## License
 
-MIT
+[MIT](LICENSE)
