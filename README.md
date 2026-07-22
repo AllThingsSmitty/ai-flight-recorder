@@ -372,10 +372,6 @@ export class MyPlugin implements Plugin {
 }
 ```
 
-## Contributing
-
-Contributions are welcome! Please read the [Contributing Guidelines](CONTRIBUTING.md) before opening a pull request.
-
 ## License
 
 [MIT](LICENSE)
