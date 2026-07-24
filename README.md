@@ -12,15 +12,15 @@ Instead of piecing together console logs after the fact, you drop in a one-line 
 
 ## Features
 
-- **Session recording** — capture every prompt, token, tool call, and completion as a structured event stream
-- **Streaming replay** — watch a session play back in real time with speed controls (0.25×–8×)
-- **Timeline & Waterfall** — visualize the full request lifecycle including parallel tool calls and streaming latency
-- **Cost Analysis** — break down token usage and estimated spend per session
-- **Search & Filter** — filter events by type or keyword across the full timeline
-- **Provider Adapters** — one-line wrappers for OpenAI, Anthropic, and Google Gemini (streaming and non-streaming)
-- **`.flight` Export/Import** — share a session as a portable file another developer can replay locally
-- **Plugin System** — hook into the recorder lifecycle with custom observers
-- **Transport System** — plug in any storage backend (in-memory, filesystem, your own API)
+- **Session recording:** capture every prompt, token, tool call, and completion as a structured event stream
+- **Streaming replay:** watch a session play back in real time with speed controls (0.25×–8×)
+- **Timeline & Waterfall:** visualize the full request lifecycle including parallel tool calls and streaming latency
+- **Cost Analysis:** break down token usage and estimated spend per session
+- **Search & Filter:** filter events by type or keyword across the full timeline
+- **Provider Adapters:** one-line wrappers for OpenAI, Anthropic, and Google Gemini (streaming and non-streaming)
+- **`.flight` Export/Import:** share a session as a portable file another developer can replay locally
+- **Plugin System:** hook into the recorder lifecycle with custom observers
+- **Transport System:** plug in any storage backend (in-memory, filesystem, your own API)
 
 ## Repository Structure
 
@@ -251,9 +251,9 @@ Sessions can be exported as portable `.flight` files (JSON with a version envelo
 }
 ```
 
-**Export from the DevTools UI** — click the Export button in the toolbar while a session is active.
+**Export from the DevTools UI:** click the Export button in the toolbar while a session is active.
 
-**Import into the DevTools UI** — click Import and select a `.flight` file. The session is added to the session list and becomes the active session immediately.
+**Import into the DevTools UI:** click Import and select a `.flight` file. The session is added to the session list and becomes the active session immediately.
 
 **Programmatic export/import:**
 
@@ -274,9 +274,9 @@ The DevTools app (`apps/devtools`) is a Next.js application providing a visual i
 
 **Tabs:**
 
-- **Timeline** — chronological event list with type badges, descriptions, and timing offsets
-- **Waterfall** — visual latency breakdown showing streaming spans and tool call durations
-- **Cost Analysis** — token usage breakdown and estimated spend per request
+- **Timeline:** chronological event list with type badges, descriptions, and timing offsets
+- **Waterfall:** visual latency breakdown showing streaming spans and tool call durations
+- **Cost Analysis:** token usage breakdown and estimated spend per request
 
 **Replay:**
 
@@ -323,9 +323,9 @@ Open the DevTools app (`pnpm dev` from the repo root), click **Import** in the t
 
 The example wires up three things from the SDK:
 
-- `FlightRecorder` — starts a session per request
-- `wrapOpenAI` — intercepts the OpenAI client and records every prompt, token, and completion automatically
-- `serializeSession` — serializes the ended session to JSON for download
+- `FlightRecorder`: starts a session per request
+- `wrapOpenAI`: intercepts the OpenAI client and records every prompt, token, and completion automatically
+- `serializeSession`: serializes the ended session to JSON for download
 
 To use Anthropic or Gemini instead, swap `wrapOpenAI` for `wrapAnthropic` or `wrapGeminiModel` in `src/app/api/chat/route.ts`.
 
@@ -374,4 +374,4 @@ export class MyPlugin implements Plugin {
 
 ## License
 
-[MIT](LICENSE)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
