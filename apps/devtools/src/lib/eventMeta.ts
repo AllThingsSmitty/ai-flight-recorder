@@ -1,4 +1,4 @@
-﻿import type { EventType } from "@ai-flight-recorder/sdk";
+import type { EventType } from "@ai-flight-recorder/sdk";
 
 export interface EventMeta {
   label: string;

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useSessionStore, selectActiveSession } from "@/stores/sessionStore";
 import { useReplayStore } from "@/stores/replayStore";
@@ -83,7 +83,9 @@ export function Timeline() {
             sessionStart={session.startedAt}
             sessionDuration={duration}
             isSelected={selectedEventId === row.representativeId}
-            isDimmed={isReplayMode && !visibleEventIds.has(row.representativeId)}
+            isDimmed={
+              isReplayMode && !visibleEventIds.has(row.representativeId)
+            }
             onClick={() => setSelectedEvent(row.representativeId)}
           />
         ))

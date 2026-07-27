@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@ai-flight-recorder/sdk",
   "version": "0.1.0",
   "description": "SDK and provider adapters for AI Flight Recorder — wrap OpenAI, Anthropic, and Gemini clients to record AI sessions",

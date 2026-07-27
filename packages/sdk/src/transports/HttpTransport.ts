@@ -1,4 +1,4 @@
-﻿import { Session, Transport, serializeSession } from "@ai-flight-recorder/core";
+import { Session, Transport, serializeSession } from "@ai-flight-recorder/core";
 
 export interface HttpTransportOptions {
   url: string;

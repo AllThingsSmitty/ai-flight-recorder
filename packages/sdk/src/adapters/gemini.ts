@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Gemini adapter — wraps a Google Generative AI model so calls to
  * generateContent / generateContentStream are automatically recorded.
  *

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useSessionStore, selectActiveSession } from "@/stores/sessionStore";
 import { useReplayStore } from "@/stores/replayStore";

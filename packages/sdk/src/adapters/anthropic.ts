@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Anthropic adapter — wraps an Anthropic client so every messages.create call
  * is automatically recorded into the active Flight Recorder session.
  *

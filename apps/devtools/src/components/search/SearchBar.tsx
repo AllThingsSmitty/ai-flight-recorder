@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useSearchStore } from "@/stores/searchStore";
 import type { EventType } from "@ai-flight-recorder/sdk";
@@ -31,7 +31,8 @@ const CHIP_LABELS: Partial<Record<EventType, string>> = {
 };
 
 export function SearchBar() {
-  const { query, activeTypes, setQuery, toggleType, clearFilters } = useSearchStore();
+  const { query, activeTypes, setQuery, toggleType, clearFilters } =
+    useSearchStore();
   const hasFilters = query.length > 0 || activeTypes.length > 0;
 
   return (
@@ -60,7 +61,8 @@ export function SearchBar() {
       <div className="flex items-center gap-1.5 flex-wrap">
         {FILTER_TYPES.map((type) => {
           const isActive = activeTypes.includes(type);
-          const style = CHIP_STYLES[type] ?? "bg-zinc-800 border-zinc-600 text-zinc-300";
+          const style =
+            CHIP_STYLES[type] ?? "bg-zinc-800 border-zinc-600 text-zinc-300";
           return (
             <button
               key={type}

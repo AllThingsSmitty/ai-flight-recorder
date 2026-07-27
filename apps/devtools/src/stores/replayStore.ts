@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { create } from "zustand";
 import type { ReplaySpeed, ReplayState, Session } from "@ai-flight-recorder/sdk";

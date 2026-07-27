@@ -1,4 +1,4 @@
-﻿import {
+import {
   AIEvent,
   Session,
   sessionDurationMs,

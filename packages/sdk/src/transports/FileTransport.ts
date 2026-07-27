@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Node.js-only transport that persists sessions as `.flight` files on disk.
  *
  * Usage:

@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "flight-recorder",
   "displayName": "AI Flight Recorder",
   "description": "View and replay .flight session recordings in VS Code",

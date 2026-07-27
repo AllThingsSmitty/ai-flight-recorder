@@ -1,4 +1,4 @@
-﻿import OpenAI from "openai";
+import OpenAI from "openai";
 import { FlightRecorder, wrapOpenAI } from "@ai-flight-recorder/sdk";
 import type { OAIChatCompletionChunk, OpenAIClientLike } from "@ai-flight-recorder/sdk";
 import { sessionStore } from "@/lib/session-store";

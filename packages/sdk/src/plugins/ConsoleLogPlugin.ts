@@ -1,4 +1,4 @@
-﻿import type { AIEvent, Plugin, Session } from "@ai-flight-recorder/core";
+import type { AIEvent, Plugin, Session } from "@ai-flight-recorder/core";
 
 export interface ConsoleLogPluginOptions {
   /** Log individual events as they are recorded. Default: true */

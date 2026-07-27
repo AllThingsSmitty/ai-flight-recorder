@@ -1,4 +1,4 @@
-﻿export * from "./FlightRecorder";
+export * from "./FlightRecorder";
 export * from "./transports/index";
 export * from "./adapters/index";
 export * from "./plugins/index";

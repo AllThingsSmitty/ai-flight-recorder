@@ -1,4 +1,4 @@
-﻿# AI Flight Recorder
+# AI Flight Recorder
 
 > Chrome DevTools for AI Applications
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Node.js-only exports for @ai-flight-recorder/sdk.
  *
  * Import from this subpath to avoid pulling Node.js built-ins into browser bundles:

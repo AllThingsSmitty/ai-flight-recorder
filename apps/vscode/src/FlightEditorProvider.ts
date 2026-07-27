@@ -1,4 +1,4 @@
-﻿import * as fs from "fs";
+import * as fs from "fs";
 import * as vscode from "vscode";
 import { deserializeSession } from "@ai-flight-recorder/core";
 

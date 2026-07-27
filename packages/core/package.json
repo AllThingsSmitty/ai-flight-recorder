@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@ai-flight-recorder/core",
   "version": "0.1.0",
   "description": "Core domain types and engine for AI Flight Recorder — record, replay, and inspect AI sessions",

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * OpenAI adapter — wraps an OpenAI client so every chat completion is
  * automatically recorded into the active Flight Recorder session.
  *

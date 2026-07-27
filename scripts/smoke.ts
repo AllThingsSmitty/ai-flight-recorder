@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SDK smoke test — exercises recording, plugins, transport, serialization,
  * and replay end-to-end without a real AI provider.
  *
