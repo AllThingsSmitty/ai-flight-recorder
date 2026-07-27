@@ -4,7 +4,7 @@ import { useSessionStore, selectActiveSession } from "@/stores/sessionStore";
 import { useReplayStore } from "@/stores/replayStore";
 import { useSearchStore, applyFilters } from "@/stores/searchStore";
 import { TimelineRow } from "./TimelineRow";
-import type { AIEvent } from "@flight-recorder/sdk";
+import type { AIEvent } from "@ai-flight-recorder/sdk";
 
 interface CollapsedRow {
   representativeId: string;
@@ -83,7 +83,9 @@ export function Timeline() {
             sessionStart={session.startedAt}
             sessionDuration={duration}
             isSelected={selectedEventId === row.representativeId}
-            isDimmed={isReplayMode && !visibleEventIds.has(row.representativeId)}
+            isDimmed={
+              isReplayMode && !visibleEventIds.has(row.representativeId)
+            }
             onClick={() => setSelectedEvent(row.representativeId)}
           />
         ))

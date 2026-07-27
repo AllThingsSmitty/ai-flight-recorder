@@ -6,8 +6,8 @@
     "strict": true,
     "esModuleInterop": true,
     "paths": {
-      "@flight-recorder/sdk": ["../packages/sdk/src/index.ts"],
-      "@flight-recorder/core": ["../packages/core/src/index.ts"]
+      "@ai-flight-recorder/sdk": ["../packages/sdk/src/index.ts"],
+      "@ai-flight-recorder/core": ["../packages/core/src/index.ts"]
     }
   },
   "include": ["./**/*.ts"]

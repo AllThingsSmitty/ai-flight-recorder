@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as vscode from "vscode";
-import { deserializeSession } from "@flight-recorder/core";
+import { deserializeSession } from "@ai-flight-recorder/core";
 
 export class FlightEditorProvider
   implements vscode.CustomReadonlyEditorProvider

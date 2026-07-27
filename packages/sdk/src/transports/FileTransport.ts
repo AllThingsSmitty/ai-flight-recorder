@@ -2,7 +2,7 @@
  * Node.js-only transport that persists sessions as `.flight` files on disk.
  *
  * Usage:
- *   import { FileTransport } from "@flight-recorder/sdk";
+ *   import { FileTransport } from "@ai-flight-recorder/sdk";
  *
  *   const transport = new FileTransport("./recordings");
  *   recorder.subscribe((event) => {
@@ -15,7 +15,7 @@
  *   const sessions = transport.loadAll();
  *
  * This module uses Node.js `fs` — do not import it in browser environments.
- * Import from "@flight-recorder/sdk/node" to keep it out of browser bundles.
+ * Import from "@ai-flight-recorder/sdk/node" to keep it out of browser bundles.
  */
 
 import fs from "node:fs";
@@ -25,7 +25,7 @@ import {
   Transport,
   serializeSession,
   deserializeSession,
-} from "@flight-recorder/core";
+} from "@ai-flight-recorder/core";
 
 export class FileTransport implements Transport {
   private _dir: string;

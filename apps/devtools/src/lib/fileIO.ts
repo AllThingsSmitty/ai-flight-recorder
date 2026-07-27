@@ -1,5 +1,5 @@
-import type { Session } from "@flight-recorder/sdk";
-import { serializeSession, deserializeSession } from "@flight-recorder/sdk";
+import type { Session } from "@ai-flight-recorder/sdk";
+import { serializeSession, deserializeSession } from "@ai-flight-recorder/sdk";
 
 /**
  * Trigger a browser download of a session as a `.flight` file.

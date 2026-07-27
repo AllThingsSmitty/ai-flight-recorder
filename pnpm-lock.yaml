@@ -35,7 +35,7 @@ importers:
 
   apps/devtools:
     dependencies:
-      '@flight-recorder/sdk':
+      '@ai-flight-recorder/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
       lucide-react:
@@ -78,7 +78,7 @@ importers:
 
   apps/vscode:
     dependencies:
-      '@flight-recorder/core':
+      '@ai-flight-recorder/core':
         specifier: workspace:*
         version: link:../../packages/core
     devDependencies:
@@ -100,7 +100,7 @@ importers:
 
   examples/nextjs-chat:
     dependencies:
-      '@flight-recorder/sdk':
+      '@ai-flight-recorder/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
       next:
@@ -146,7 +146,7 @@ importers:
 
   packages/sdk:
     dependencies:
-      '@flight-recorder/core':
+      '@ai-flight-recorder/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -165,7 +165,7 @@ importers:
 
   packages/ui:
     dependencies:
-      '@flight-recorder/core':
+      '@ai-flight-recorder/core':
         specifier: workspace:*
         version: link:../core
       react:

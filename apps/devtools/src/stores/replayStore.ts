@@ -1,8 +1,8 @@
 "use client";
 
 import { create } from "zustand";
-import type { ReplaySpeed, ReplayState, Session } from "@flight-recorder/sdk";
-import { ReplayEngine } from "@flight-recorder/sdk";
+import type { ReplaySpeed, ReplayState, Session } from "@ai-flight-recorder/sdk";
+import { ReplayEngine } from "@ai-flight-recorder/sdk";
 
 interface ReplayStore {
   engine: ReplayEngine | null;

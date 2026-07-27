@@ -4,8 +4,8 @@
  *
  * Usage:
  *   import { GoogleGenerativeAI } from "@google/generative-ai";
- *   import { FlightRecorder } from "@flight-recorder/sdk";
- *   import { wrapGeminiModel } from "@flight-recorder/sdk/adapters/gemini";
+ *   import { FlightRecorder } from "@ai-flight-recorder/sdk";
+ *   import { wrapGeminiModel } from "@ai-flight-recorder/sdk/adapters/gemini";
  *
  *   const recorder  = new FlightRecorder();
  *   const genAI     = new GoogleGenerativeAI(apiKey);
@@ -17,7 +17,7 @@
  *   recorder.endSession();
  */
 
-import type { Recorder } from "@flight-recorder/core";
+import type { Recorder } from "@ai-flight-recorder/core";
 import { estimateCost } from "./pricing";
 
 // ── Minimal interface types ───────────────────────────────────────────────────

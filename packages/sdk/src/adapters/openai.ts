@@ -4,8 +4,8 @@
  *
  * Usage:
  *   import OpenAI from "openai";
- *   import { FlightRecorder } from "@flight-recorder/sdk";
- *   import { wrapOpenAI } from "@flight-recorder/sdk/adapters/openai";
+ *   import { FlightRecorder } from "@ai-flight-recorder/sdk";
+ *   import { wrapOpenAI } from "@ai-flight-recorder/sdk/adapters/openai";
  *
  *   const recorder = new FlightRecorder();
  *   const openai   = wrapOpenAI(new OpenAI(), recorder);
@@ -20,7 +20,7 @@
  * not available on the wrapped stream.
  */
 
-import type { Recorder } from "@flight-recorder/core";
+import type { Recorder } from "@ai-flight-recorder/core";
 import { estimateCost } from "./pricing";
 
 // ── Minimal interface types (no hard dep on "openai" package) ─────────────────

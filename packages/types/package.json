@@ -1,5 +1,5 @@
 {
-  "name": "@flight-recorder/types",
+  "name": "@ai-flight-recorder/types",
   "version": "0.0.1",
   "private": true,
   "type": "module",

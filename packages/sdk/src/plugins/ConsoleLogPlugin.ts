@@ -1,4 +1,4 @@
-import type { AIEvent, Plugin, Session } from "@flight-recorder/core";
+import type { AIEvent, Plugin, Session } from "@ai-flight-recorder/core";
 
 export interface ConsoleLogPluginOptions {
   /** Log individual events as they are recorded. Default: true */
@@ -16,8 +16,8 @@ export interface ConsoleLogPluginOptions {
  * Useful for debugging AI interactions during development.
  *
  * Usage:
- *   import { FlightRecorder } from "@flight-recorder/sdk";
- *   import { ConsoleLogPlugin } from "@flight-recorder/sdk";
+ *   import { FlightRecorder } from "@ai-flight-recorder/sdk";
+ *   import { ConsoleLogPlugin } from "@ai-flight-recorder/sdk";
  *
  *   const fr = new FlightRecorder({
  *     plugins: [new ConsoleLogPlugin()],

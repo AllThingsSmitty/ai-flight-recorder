@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { AIEvent, Session } from "@flight-recorder/sdk";
+import type { AIEvent, Session } from "@ai-flight-recorder/sdk";
 
 interface SessionState {
   sessions: Session[];

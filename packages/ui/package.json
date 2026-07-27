@@ -1,5 +1,5 @@
 {
-  "name": "@flight-recorder/ui",
+  "name": "@ai-flight-recorder/ui",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -19,7 +19,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@flight-recorder/core": "workspace:*"
+    "@ai-flight-recorder/core": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19",

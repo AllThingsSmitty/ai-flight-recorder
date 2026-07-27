@@ -1,6 +1,6 @@
 "use client";
 
-import type { AIEvent } from "@flight-recorder/sdk";
+import type { AIEvent } from "@ai-flight-recorder/sdk";
 import { eventSummary, getEventMeta } from "@/lib/eventMeta";
 
 interface Props {
@@ -22,10 +22,13 @@ export function TimelineRow({
 }: Props) {
   const meta = getEventMeta(event.type);
   const relativeMs = event.timestamp - sessionStart;
-  const startPct = sessionDuration > 0 ? (relativeMs / sessionDuration) * 100 : 0;
+  const startPct =
+    sessionDuration > 0 ? (relativeMs / sessionDuration) * 100 : 0;
 
   const duration =
-    event.type === "tool-result" && event.durationMs != null ? event.durationMs : null;
+    event.type === "tool-result" && event.durationMs != null
+      ? event.durationMs
+      : null;
   const endPct =
     duration != null && sessionDuration > 0
       ? Math.min(100, ((relativeMs + duration) / sessionDuration) * 100)
@@ -67,7 +70,10 @@ export function TimelineRow({
       </span>
 
       {/* Waterfall bar */}
-      <div className="relative shrink-0 h-4 rounded overflow-hidden" style={{ width: 160 }}>
+      <div
+        className="relative shrink-0 h-4 rounded overflow-hidden"
+        style={{ width: 160 }}
+      >
         <div className="absolute inset-0 bg-[#1a1a1d]" />
         {endPct != null ? (
           // Bar for timed events (tool calls)

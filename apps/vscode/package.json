@@ -50,6 +50,6 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@flight-recorder/core": "workspace:*"
+    "@ai-flight-recorder/core": "workspace:*"
   }
 }

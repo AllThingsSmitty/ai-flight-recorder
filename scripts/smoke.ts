@@ -17,7 +17,7 @@ import {
   deserializeSession,
   parseFlightFile,
   FLIGHT_FILE_VERSION,
-} from "@flight-recorder/sdk";
+} from "@ai-flight-recorder/sdk";
 
 const PASS = "\x1b[32m✓\x1b[0m";
 const FAIL = "\x1b[31m✗\x1b[0m";

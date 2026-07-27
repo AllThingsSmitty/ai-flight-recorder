@@ -2,15 +2,24 @@
 
 import { useSessionStore, selectActiveSession } from "@/stores/sessionStore";
 import { useReplayStore } from "@/stores/replayStore";
-import { formatDuration } from "@flight-recorder/sdk";
-import type { ReplaySpeed } from "@flight-recorder/sdk";
+import { formatDuration } from "@ai-flight-recorder/sdk";
+import type { ReplaySpeed } from "@ai-flight-recorder/sdk";
 
 const SPEEDS: ReplaySpeed[] = [0.25, 0.5, 1, 2, 4, 8];
 
 export function ReplayControls() {
   const session = useSessionStore(selectActiveSession);
-  const { isReplayMode, replayState, initReplay, exitReplay, play, pause, seek, setSpeed, reset } =
-    useReplayStore();
+  const {
+    isReplayMode,
+    replayState,
+    initReplay,
+    exitReplay,
+    play,
+    pause,
+    seek,
+    setSpeed,
+    reset,
+  } = useReplayStore();
 
   if (!session) return null;
 
@@ -25,7 +34,10 @@ export function ReplayControls() {
           Replay Session
         </button>
         <span className="text-xs text-zinc-500">
-          {session.events.length} events · {formatDuration((session.endedAt ?? session.startedAt) - session.startedAt)}
+          {session.events.length} events ·{" "}
+          {formatDuration(
+            (session.endedAt ?? session.startedAt) - session.startedAt,
+          )}
         </span>
       </div>
     );
@@ -142,7 +154,13 @@ function PauseIcon({ className }: { className?: string }) {
 
 function ResetIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <path d="M2 8a6 6 0 1 1 1.5 4" strokeLinecap="round" />
       <path d="M2 12V8h4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>

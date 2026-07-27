@@ -4,7 +4,7 @@ import {
   sessionDurationMs,
   sessionEstimatedCost,
   sessionTotalTokens,
-} from "@flight-recorder/core";
+} from "@ai-flight-recorder/core";
 
 export interface OtlpAttribute {
   key: string;
@@ -71,7 +71,7 @@ export function toOtlp(session: Session): OtlpPayload {
         resource: { attributes: [s("service.name", "ai-flight-recorder")] },
         scopeSpans: [
           {
-            scope: { name: "@flight-recorder/sdk", version: "0.0.1" },
+            scope: { name: "@ai-flight-recorder/sdk", version: "0.0.1" },
             spans: [rootSpan, ...eventSpans],
           },
         ],

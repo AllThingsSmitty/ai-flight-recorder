@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { AIEvent, EventType } from "@flight-recorder/sdk";
+import type { AIEvent, EventType } from "@ai-flight-recorder/sdk";
 
 interface SearchState {
   query: string;

@@ -5,4 +5,4 @@ export * from "./plugins/index";
 export * from "./exporters/index";
 
 // Re-export the full core surface so consumers only need one import
-export * from "@flight-recorder/core";
+export * from "@ai-flight-recorder/core";

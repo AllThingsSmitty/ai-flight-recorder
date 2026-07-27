@@ -1,5 +1,5 @@
 {
-  "name": "@flight-recorder/example-nextjs-chat",
+  "name": "@ai-flight-recorder/example-nextjs-chat",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@flight-recorder/sdk": "workspace:*",
+    "@ai-flight-recorder/sdk": "workspace:*",
     "next": "^15.3.0",
     "openai": "^4",
     "react": "^19.0.0",
