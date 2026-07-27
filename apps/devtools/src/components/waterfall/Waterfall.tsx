@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useSessionStore, selectActiveSession } from "@/stores/sessionStore";
 import { useReplayStore } from "@/stores/replayStore";
 import { useSearchStore, applyFilters } from "@/stores/searchStore";
 import { getEventMeta } from "@/lib/eventMeta";
-import type { AIEvent } from "@flight-recorder/sdk";
+import type { AIEvent } from "@ai-flight-recorder/sdk";
 
 function tickInterval(durationMs: number): number {
   if (durationMs <= 1_000) return 100;

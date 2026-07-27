@@ -1,4 +1,4 @@
-import { Session, Transport } from "@flight-recorder/core";
+﻿import { Session, Transport } from "@ai-flight-recorder/core";
 
 /**
  * Stores recorded sessions in memory. Useful for testing and local development.

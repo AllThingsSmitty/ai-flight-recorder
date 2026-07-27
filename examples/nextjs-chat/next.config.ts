@@ -1,7 +1,7 @@
-import type { NextConfig } from "next";
+﻿import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@flight-recorder/core", "@flight-recorder/sdk"],
+  transpilePackages: ["@ai-flight-recorder/core", "@ai-flight-recorder/sdk"],
 };
 
 export default nextConfig;

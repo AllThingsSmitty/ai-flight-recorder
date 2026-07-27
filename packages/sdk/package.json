@@ -1,5 +1,5 @@
-{
-  "name": "@flight-recorder/sdk",
+﻿{
+  "name": "@ai-flight-recorder/sdk",
   "version": "0.1.0",
   "description": "SDK and provider adapters for AI Flight Recorder — wrap OpenAI, Anthropic, and Gemini clients to record AI sessions",
   "type": "module",
@@ -52,7 +52,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@flight-recorder/core": "workspace:*"
+    "@ai-flight-recorder/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22",

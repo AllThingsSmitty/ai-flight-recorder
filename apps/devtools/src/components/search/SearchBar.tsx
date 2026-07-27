@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import { useSearchStore } from "@/stores/searchStore";
-import type { EventType } from "@flight-recorder/sdk";
+import type { EventType } from "@ai-flight-recorder/sdk";
 
 const FILTER_TYPES: EventType[] = [
   "prompt",

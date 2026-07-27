@@ -1,4 +1,4 @@
-import { serializeSession } from "@flight-recorder/sdk";
+﻿import { serializeSession } from "@ai-flight-recorder/sdk";
 import { sessionStore } from "@/lib/session-store";
 
 export const runtime = "nodejs";

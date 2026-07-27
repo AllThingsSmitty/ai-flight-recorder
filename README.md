@@ -1,4 +1,4 @@
-# AI Flight Recorder
+﻿# AI Flight Recorder
 
 > Chrome DevTools for AI Applications
 
@@ -73,7 +73,7 @@ Exercises recording, plugins, transport, serialization, and replay end-to-end. A
 ### Basic recording
 
 ```ts
-import { FlightRecorder } from "@flight-recorder/sdk";
+import { FlightRecorder } from "@ai-flight-recorder/sdk";
 
 const fr = new FlightRecorder();
 const session = fr.startSession({ label: "my-chat" });
@@ -101,7 +101,7 @@ Drop-in wrappers that intercept the provider client and record every call automa
 
 ```ts
 import OpenAI from "openai";
-import { FlightRecorder, wrapOpenAI } from "@flight-recorder/sdk";
+import { FlightRecorder, wrapOpenAI } from "@ai-flight-recorder/sdk";
 
 const fr = new FlightRecorder();
 const openai = wrapOpenAI(new OpenAI(), fr.recorder);
@@ -120,7 +120,7 @@ fr.endSession();
 
 ```ts
 import Anthropic from "@anthropic-ai/sdk";
-import { FlightRecorder, wrapAnthropic } from "@flight-recorder/sdk";
+import { FlightRecorder, wrapAnthropic } from "@ai-flight-recorder/sdk";
 
 const fr = new FlightRecorder();
 const client = wrapAnthropic(new Anthropic(), fr.recorder);
@@ -140,7 +140,7 @@ fr.endSession();
 
 ```ts
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { FlightRecorder, wrapGeminiModel } from "@flight-recorder/sdk";
+import { FlightRecorder, wrapGeminiModel } from "@ai-flight-recorder/sdk";
 
 const fr = new FlightRecorder();
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
@@ -159,7 +159,7 @@ All three adapters support streaming. Wrap your existing client and all calls ar
 ### Plugins
 
 ```ts
-import { FlightRecorder, ConsoleLogPlugin } from "@flight-recorder/sdk";
+import { FlightRecorder, ConsoleLogPlugin } from "@ai-flight-recorder/sdk";
 
 const fr = new FlightRecorder({
   plugins: [
@@ -185,7 +185,7 @@ fr.use(pluginA).use(pluginB);
 ### Transport
 
 ```ts
-import { FlightRecorder, InMemoryTransport } from "@flight-recorder/sdk";
+import { FlightRecorder, InMemoryTransport } from "@ai-flight-recorder/sdk";
 
 const transport = new InMemoryTransport();
 
@@ -201,8 +201,8 @@ const sessions = transport.getAll();
 **Node.js filesystem transport:**
 
 ```ts
-import { FlightRecorder } from "@flight-recorder/sdk";
-import { FileTransport } from "@flight-recorder/sdk/node";
+import { FlightRecorder } from "@ai-flight-recorder/sdk";
+import { FileTransport } from "@ai-flight-recorder/sdk/node";
 
 const transport = new FileTransport("./recordings");
 const fr = new FlightRecorder({ transport });
@@ -218,7 +218,7 @@ const sessions = transport.loadAll();
 ### Implement your own transport
 
 ```ts
-import type { Transport } from "@flight-recorder/sdk";
+import type { Transport } from "@ai-flight-recorder/sdk";
 
 class MyApiTransport implements Transport {
   async save(session) {
@@ -258,7 +258,7 @@ Sessions can be exported as portable `.flight` files (JSON with a version envelo
 **Programmatic export/import:**
 
 ```ts
-import { serializeSession, deserializeSession } from "@flight-recorder/sdk";
+import { serializeSession, deserializeSession } from "@ai-flight-recorder/sdk";
 import { writeFileSync, readFileSync } from "node:fs";
 
 // Export
@@ -358,10 +358,10 @@ pnpm smoke
 
 ### Writing a plugin
 
-Implement the `Plugin` interface from `@flight-recorder/core`:
+Implement the `Plugin` interface from `@ai-flight-recorder/core`:
 
 ```ts
-import type { Plugin, AIEvent, Session } from "@flight-recorder/sdk";
+import type { Plugin, AIEvent, Session } from "@ai-flight-recorder/sdk";
 
 export class MyPlugin implements Plugin {
   readonly name = "my-plugin";

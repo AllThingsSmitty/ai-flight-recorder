@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import { useSessionStore, selectActiveSession } from "@/stores/sessionStore";
-import { formatDuration } from "@flight-recorder/sdk";
+import { formatDuration } from "@ai-flight-recorder/sdk";
 
 export function SessionStats() {
   const session = useSessionStore(selectActiveSession);

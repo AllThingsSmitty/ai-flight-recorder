@@ -1,11 +1,11 @@
-/**
+﻿/**
  * Anthropic adapter — wraps an Anthropic client so every messages.create call
  * is automatically recorded into the active Flight Recorder session.
  *
  * Usage:
  *   import Anthropic from "@anthropic-ai/sdk";
- *   import { FlightRecorder } from "@flight-recorder/sdk";
- *   import { wrapAnthropic } from "@flight-recorder/sdk/adapters/anthropic";
+ *   import { FlightRecorder } from "@ai-flight-recorder/sdk";
+ *   import { wrapAnthropic } from "@ai-flight-recorder/sdk/adapters/anthropic";
  *
  *   const recorder  = new FlightRecorder();
  *   const anthropic = wrapAnthropic(new Anthropic(), recorder);
@@ -18,7 +18,7 @@
  * Anthropic MessageStream. Use `for await` as normal.
  */
 
-import type { Recorder } from "@flight-recorder/core";
+import type { Recorder } from "@ai-flight-recorder/core";
 import { estimateCost } from "./pricing";
 
 // ── Minimal interface types ───────────────────────────────────────────────────

@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useSessionStore } from "@/stores/sessionStore";
-import { formatDuration } from "@flight-recorder/sdk";
+import { formatDuration } from "@ai-flight-recorder/sdk";
 
 export function SessionPicker() {
   const { sessions, activeSessionId, setActiveSession } = useSessionStore();

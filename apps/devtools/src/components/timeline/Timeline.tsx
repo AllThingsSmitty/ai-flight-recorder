@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useSessionStore, selectActiveSession } from "@/stores/sessionStore";
 import { useReplayStore } from "@/stores/replayStore";
 import { useSearchStore, applyFilters } from "@/stores/searchStore";
 import { TimelineRow } from "./TimelineRow";
-import type { AIEvent } from "@flight-recorder/sdk";
+import type { AIEvent } from "@ai-flight-recorder/sdk";
 
 interface CollapsedRow {
   representativeId: string;

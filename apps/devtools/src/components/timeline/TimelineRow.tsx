@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import type { AIEvent } from "@flight-recorder/sdk";
+import type { AIEvent } from "@ai-flight-recorder/sdk";
 import { eventSummary, getEventMeta } from "@/lib/eventMeta";
 
 interface Props {

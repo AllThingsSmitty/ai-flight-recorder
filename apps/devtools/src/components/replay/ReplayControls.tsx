@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useSessionStore, selectActiveSession } from "@/stores/sessionStore";
 import { useReplayStore } from "@/stores/replayStore";
-import { formatDuration } from "@flight-recorder/sdk";
-import type { ReplaySpeed } from "@flight-recorder/sdk";
+import { formatDuration } from "@ai-flight-recorder/sdk";
+import type { ReplaySpeed } from "@ai-flight-recorder/sdk";
 
 const SPEEDS: ReplaySpeed[] = [0.25, 0.5, 1, 2, 4, 8];
 

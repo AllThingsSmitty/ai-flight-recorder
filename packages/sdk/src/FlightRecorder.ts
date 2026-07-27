@@ -1,4 +1,4 @@
-import {
+﻿import {
   AIEvent,
   Plugin,
   Recorder,
@@ -7,7 +7,7 @@ import {
   Session,
   StartSessionOptions,
   Transport,
-} from "@flight-recorder/core";
+} from "@ai-flight-recorder/core";
 
 export type { AIEvent, Plugin, RecordableEvent, Session, StartSessionOptions, Transport };
 
@@ -25,7 +25,7 @@ export interface FlightRecorderOptions {
  * Top-level entry point for the AI Flight Recorder SDK.
  *
  * Usage:
- *   import { FlightRecorder, ConsoleLogPlugin } from "@flight-recorder/sdk";
+ *   import { FlightRecorder, ConsoleLogPlugin } from "@ai-flight-recorder/sdk";
  *
  *   const fr = new FlightRecorder({
  *     plugins: [new ConsoleLogPlugin()],
