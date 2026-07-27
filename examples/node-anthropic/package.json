@@ -1,0 +1,19 @@
+{
+  "name": "@ai-flight-recorder/example-node-anthropic",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ai-flight-recorder/sdk": "workspace:*",
+    "@anthropic-ai/sdk": "^0.39.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4",
+    "typescript": "^5"
+  }
+}

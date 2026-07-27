@@ -1,0 +1,41 @@
+name: Publish VS Code Extension
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (e.g. 0.1.0)"
+        required: true
+
+jobs:
+  publish:
+    name: Publish to VS Code Marketplace
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build core (extension dependency)
+        run: pnpm --filter @ai-flight-recorder/core build
+
+      - name: Install vsce
+        run: npm install -g @vscode/vsce
+
+      - name: Publish extension
+        working-directory: apps/vscode
+        run: vsce publish --no-dependencies
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}

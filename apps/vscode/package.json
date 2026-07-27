@@ -9,6 +9,8 @@
     "vscode": "^1.90.0"
   },
   "categories": [
+    "Debuggers",
+    "Visualization",
     "Other"
   ],
   "keywords": [
@@ -19,6 +21,16 @@
     "anthropic",
     "devtools"
   ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AllThingsSmitty/ai-flight-recorder.git"
+  },
+  "homepage": "https://github.com/AllThingsSmitty/ai-flight-recorder#readme",
+  "galleryBanner": {
+    "color": "#0d0d0e",
+    "theme": "dark"
+  },
   "icon": "icon.png",
   "main": "./out/extension.js",
   "contributes": {
