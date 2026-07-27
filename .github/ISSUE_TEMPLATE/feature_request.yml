@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest something new or an improvement to an existing feature
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. The more concrete you can be about the problem and the use case, the easier it is to evaluate.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the situation where you hit this limitation. Real use cases are more useful than abstract descriptions.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: What would you like to see? Include a rough API sketch if it helps.
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any workarounds you've tried or other approaches you've thought about.
+    validations:
+      required: false

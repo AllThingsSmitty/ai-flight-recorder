@@ -10,7 +10,7 @@ Instead of piecing together console logs after the fact, you drop in a one-line 
 [![npm](https://img.shields.io/npm/v/@ai-flight-recorder/core.svg)](https://www.npmjs.com/package/@ai-flight-recorder/core)
 [![npm](https://img.shields.io/npm/v/@ai-flight-recorder/sdk.svg)](https://www.npmjs.com/package/@ai-flight-recorder/sdk)
 
-![AI Flight Recorder](.github/assets/screenshot-timeline.png)
+![AI Flight Recorder](.github/assets/screenshot-timeline.gif)
 
 ## Features
 

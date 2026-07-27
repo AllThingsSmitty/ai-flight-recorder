@@ -1,8 +1,11 @@
 .vscode/**
+.turbo/**
 src/**
 node_modules/**
 *.ts
 *.mjs
 tsconfig.json
+tsconfig.webview.json
 esbuild.mjs
+icon.svg
 .vscodeignore

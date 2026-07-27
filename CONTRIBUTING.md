@@ -16,7 +16,8 @@ This project uses [pnpm](https://pnpm.io/) workspaces and [Turborepo](https://tu
 ```bash
 pnpm install
 pnpm build
-pnpm smoke   # runs the end-to-end smoke test (19 assertions)
+pnpm test        # unit tests (vitest)
+pnpm smoke       # end-to-end smoke test
 ```
 
 The monorepo is organized as follows:
@@ -24,7 +25,8 @@ The monorepo is organized as follows:
 - `packages/core` — pure domain logic (events, Session, Recorder, ReplayEngine, serialization)
 - `packages/sdk` — FlightRecorder wrapper, provider adapters, plugins, transports
 - `apps/devtools` — Next.js 15 DevTools UI
-- `examples/` — reference implementations
+- `apps/vscode` — VS Code extension for `.flight` files
+- `examples/` — reference implementations (nextjs-chat, node-anthropic, node-gemini)
 
 ## Ways to Contribute
 
@@ -68,7 +70,8 @@ The DevTools app is in `apps/devtools/`. It uses Next.js 15, React 19, Tailwind 
 
 - Search open and closed PRs to avoid duplicate submissions.
 - Keep changes focused — one feature or fix per PR.
-- Run `pnpm build`, `pnpm lint`, `pnpm typecheck`, and `pnpm smoke` before submitting.
+- Run `pnpm build`, `pnpm test`, `pnpm lint`, `pnpm typecheck`, and `pnpm smoke` before submitting.
+- Add a changeset (`pnpm changeset`) if your PR changes `packages/core` or `packages/sdk`.
 - The PR title should be clear and descriptive.
 - Check your spelling and grammar.
 - Make sure your editor is configured to remove trailing whitespace.

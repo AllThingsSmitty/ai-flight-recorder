@@ -6,6 +6,9 @@ dist
 .next
 out
 
+# VS Code extension package
+*.vsix
+
 # TypeScript incremental build cache
 *.tsbuildinfo
 
