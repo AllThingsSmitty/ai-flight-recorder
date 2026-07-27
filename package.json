@@ -8,9 +8,13 @@
     "lint": "turbo lint",
     "test": "turbo test",
     "typecheck": "turbo typecheck",
-    "smoke": "tsx --tsconfig scripts/tsconfig.json scripts/smoke.ts"
+    "smoke": "tsx --tsconfig scripts/tsconfig.json scripts/smoke.ts",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.1",
     "@eslint/js": "^9",
     "eslint": "^9",
     "eslint-plugin-react": "^7.37",
