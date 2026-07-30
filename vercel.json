@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm --filter @ai-flight-recorder/docs build",
+  "outputDirectory": "apps/docs/dist",
+  "framework": null
+}
