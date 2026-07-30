@@ -5,6 +5,10 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**", "out/**"]
     },
+    "@ai-flight-recorder/docs#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["../../dist/**"]
+    },
     "dev": {
       "cache": false,
       "persistent": true
