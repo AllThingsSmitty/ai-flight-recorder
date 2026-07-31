@@ -35,7 +35,10 @@
     "url": "https://github.com/AllThingsSmitty/ai-flight-recorder.git",
     "directory": "packages/core"
   },
-  "homepage": "https://github.com/AllThingsSmitty/ai-flight-recorder#readme",
+  "homepage": "https://ai-flight-recorder.vercel.app",
+  "bugs": {
+    "url": "https://github.com/AllThingsSmitty/ai-flight-recorder/issues"
+  },
   "publishConfig": {
     "access": "public"
   },
