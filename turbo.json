@@ -7,7 +7,7 @@
     },
     "@ai-flight-recorder/docs#build": {
       "dependsOn": ["^build"],
-      "outputs": ["../../dist/**"]
+      "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false,
