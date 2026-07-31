@@ -30,7 +30,9 @@ Instead of piecing together console logs after the fact, you drop in a one-line 
 ```
 ai-flight-recorder/
 ├── apps/
-│   └── devtools/          Next.js DevTools application
+│   ├── devtools/          Next.js DevTools application
+│   ├── docs/              Starlight documentation site
+│   └── vscode/            VS Code extension — custom editor for .flight files
 ├── packages/
 │   ├── core/              Domain model — events, session, recorder, replay engine
 │   ├── sdk/               Developer-facing API — FlightRecorder, adapters, plugins, transports
@@ -39,7 +41,9 @@ ai-flight-recorder/
 ├── scripts/
 │   └── smoke.ts           SDK integration smoke test
 └── examples/
-    └── nextjs-chat/       Full-stack chat app — OpenAI streaming + .flight export
+    ├── nextjs-chat/       Full-stack chat app — OpenAI streaming + .flight export
+    ├── node-anthropic/    Node.js example — Anthropic + FileTransport
+    └── node-gemini/       Node.js example — Google Gemini + FileTransport
 ```
 
 ## Getting Started
@@ -69,7 +73,7 @@ Open [http://localhost:3000](http://localhost:3000). The app loads with two demo
 pnpm smoke
 ```
 
-Exercises recording, plugins, transport, serialization, and replay end-to-end. All 19 assertions should pass.
+Exercises recording, plugins, transport, serialization, and replay end-to-end. All 40 assertions should pass.
 
 ## SDK Usage
 

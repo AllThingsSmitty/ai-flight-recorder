@@ -50,8 +50,18 @@ Posts each session as JSON to an HTTP endpoint.
 ```ts
 import { FlightRecorder, HttpTransport } from "@ai-flight-recorder/sdk";
 
-const transport = new HttpTransport("https://your-api.example.com/sessions");
+const transport = new HttpTransport({ url: "https://your-api.example.com/sessions" });
 const fr = new FlightRecorder({ transport });
+```
+
+Optionally pass an `apiKey` and `timeout`:
+
+```ts
+const transport = new HttpTransport({
+  url: "https://your-api.example.com/sessions",
+  apiKey: process.env.MY_API_KEY,
+  timeout: 10_000,
+});
 ```
 
 ## Custom transport
