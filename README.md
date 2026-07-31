@@ -9,6 +9,7 @@ Instead of piecing together console logs after the fact, you drop in a one-line 
 [![CI](https://github.com/AllThingsSmitty/ai-flight-recorder/actions/workflows/ci.yml/badge.svg)](https://github.com/AllThingsSmitty/ai-flight-recorder/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/@ai-flight-recorder/core.svg)](https://www.npmjs.com/package/@ai-flight-recorder/core)
 [![npm](https://img.shields.io/npm/v/@ai-flight-recorder/sdk.svg)](https://www.npmjs.com/package/@ai-flight-recorder/sdk)
+[![Docs](https://img.shields.io/badge/docs-ai--flight--recorder.vercel.app-blue)](https://ai-flight-recorder.vercel.app)
 
 ![AI Flight Recorder](.github/assets/screenshot-timeline.gif)
 
