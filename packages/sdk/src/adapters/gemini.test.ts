@@ -246,7 +246,7 @@ describe("wrapGeminiModel", () => {
       };
 
       const result = await wrapGeminiModel(model, recorder).generateContentStream("hi");
-      for await (const _ of result.stream) {}
+      for await (const _ of result.stream) { /* exhaust */ }
 
       const recorded = (recorder.record as ReturnType<typeof vi.fn>).mock.calls.map((c) => c[0]);
       const tokens = recorded.filter((c) => c.type === "token");
@@ -274,7 +274,7 @@ describe("wrapGeminiModel", () => {
       const result = await wrapGeminiModel(model, recorder).generateContentStream("hi");
 
       await expect(async () => {
-        for await (const _ of result.stream) {}
+        for await (const _ of result.stream) { /* exhaust */ }
       }).rejects.toThrow("stream failure");
 
       expect(recorder.record).toHaveBeenCalledWith(

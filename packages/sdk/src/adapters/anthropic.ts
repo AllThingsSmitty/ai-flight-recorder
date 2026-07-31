@@ -64,7 +64,7 @@ export interface AnthropicMessageResponse {
 }
 
 // Server-sent event types for streaming
-interface AnthropicStreamEvent {
+export interface AnthropicStreamEvent {
   type: string;
   index?: number;
   delta?: { type: string; text?: string; partial_json?: string };

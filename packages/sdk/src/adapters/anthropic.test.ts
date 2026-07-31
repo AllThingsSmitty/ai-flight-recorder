@@ -244,7 +244,7 @@ describe("wrapAnthropic", () => {
     it("yields all events from the underlying stream", async () => {
       const recorder = makeRecorder();
       const events: AnthropicStreamEvent[] = [
-        { type: "message_start", message: { usage: { input_tokens: 8 } } },
+        { type: "message_start", message: { usage: { input_tokens: 8, output_tokens: 0 } } },
         { type: "content_block_delta", delta: { type: "text_delta", text: "Hello" } },
         { type: "content_block_delta", delta: { type: "text_delta", text: " world" } },
         { type: "message_delta", delta: { type: "message_delta" }, usage: { output_tokens: 5 } },
@@ -269,7 +269,7 @@ describe("wrapAnthropic", () => {
     it("records a token event for each text_delta chunk", async () => {
       const recorder = makeRecorder();
       const events: AnthropicStreamEvent[] = [
-        { type: "message_start", message: { usage: { input_tokens: 8 } } },
+        { type: "message_start", message: { usage: { input_tokens: 8, output_tokens: 0 } } },
         { type: "content_block_delta", delta: { type: "text_delta", text: "Hello" } },
         { type: "content_block_delta", delta: { type: "text_delta", text: " world" } },
         { type: "message_delta", delta: { type: "message_delta" }, usage: { output_tokens: 5 } },
@@ -284,7 +284,7 @@ describe("wrapAnthropic", () => {
         max_tokens: 100,
         stream: true,
       });
-      for await (const _ of result as AsyncIterable<AnthropicStreamEvent>) {}
+      for await (const _ of result as AsyncIterable<AnthropicStreamEvent>) { /* exhaust */ }
 
       const recorded = (recorder.record as ReturnType<typeof vi.fn>).mock.calls.map((c) => c[0]);
       const tokens = recorded.filter((c) => c.type === "token");
@@ -296,7 +296,7 @@ describe("wrapAnthropic", () => {
     it("records completion with assembled text and token counts after stream exhausts", async () => {
       const recorder = makeRecorder();
       const events: AnthropicStreamEvent[] = [
-        { type: "message_start", message: { usage: { input_tokens: 8 } } },
+        { type: "message_start", message: { usage: { input_tokens: 8, output_tokens: 0 } } },
         { type: "content_block_delta", delta: { type: "text_delta", text: "Hi" } },
         { type: "message_delta", delta: { type: "message_delta" }, usage: { output_tokens: 3 } },
       ];
@@ -310,7 +310,7 @@ describe("wrapAnthropic", () => {
         max_tokens: 100,
         stream: true,
       });
-      for await (const _ of result as AsyncIterable<AnthropicStreamEvent>) {}
+      for await (const _ of result as AsyncIterable<AnthropicStreamEvent>) { /* exhaust */ }
 
       expect(recorder.record).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -326,7 +326,7 @@ describe("wrapAnthropic", () => {
     it("records tool-call when a tool_use block is fully streamed", async () => {
       const recorder = makeRecorder();
       const events: AnthropicStreamEvent[] = [
-        { type: "message_start", message: { usage: { input_tokens: 10 } } },
+        { type: "message_start", message: { usage: { input_tokens: 10, output_tokens: 0 } } },
         { type: "content_block_start", content_block: { type: "tool_use", id: "t1", name: "search" } },
         { type: "content_block_delta", delta: { type: "input_json_delta", partial_json: '{"q":' } },
         { type: "content_block_delta", delta: { type: "input_json_delta", partial_json: '"hello"}' } },
@@ -343,7 +343,7 @@ describe("wrapAnthropic", () => {
         max_tokens: 100,
         stream: true,
       });
-      for await (const _ of result as AsyncIterable<AnthropicStreamEvent>) {}
+      for await (const _ of result as AsyncIterable<AnthropicStreamEvent>) { /* exhaust */ }
 
       expect(recorder.record).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -374,7 +374,7 @@ describe("wrapAnthropic", () => {
       });
 
       await expect(async () => {
-        for await (const _ of result as AsyncIterable<AnthropicStreamEvent>) {}
+        for await (const _ of result as AsyncIterable<AnthropicStreamEvent>) { /* exhaust */ }
       }).rejects.toThrow("stream error");
 
       expect(recorder.record).toHaveBeenCalledWith(
