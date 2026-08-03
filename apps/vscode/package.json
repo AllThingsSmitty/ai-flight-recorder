@@ -2,7 +2,7 @@
   "name": "flight-recorder",
   "displayName": "AI Flight Recorder",
   "description": "View and replay .flight session recordings in VS Code",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "AllThingsSmitty",
   "private": true,
   "engines": {
