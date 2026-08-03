@@ -24,6 +24,7 @@ Instead of piecing together console logs after the fact, you drop in a one-line 
 - **`.flight` Export/Import:** share a session as a portable file another developer can replay locally
 - **Plugin System:** hook into the recorder lifecycle with custom observers
 - **Transport System:** plug in any storage backend (in-memory, filesystem, your own API)
+- **OpenTelemetry Export:** convert any session to an OTLP trace payload for ingestion into Jaeger, Grafana Tempo, Honeycomb, or any OTel-compatible backend (`toOtlp` from `@ai-flight-recorder/sdk`)
 
 ## Repository Structure
 
