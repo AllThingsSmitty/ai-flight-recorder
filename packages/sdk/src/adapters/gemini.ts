@@ -18,7 +18,9 @@
  */
 
 import type { Recorder } from "@ai-flight-recorder/core";
-import { estimateCost } from "./pricing";
+import { estimateCost, type PricingOverrides } from "./pricing";
+
+type RecorderArg = Recorder & { pricing?: PricingOverrides };
 
 // ── Minimal interface types ───────────────────────────────────────────────────
 
@@ -69,14 +71,15 @@ export interface GeminiModelLike {
 
 // ── Adapter ───────────────────────────────────────────────────────────────────
 
-export function wrapGeminiModel<T extends GeminiModelLike>(model: T, recorder: Recorder): T {
+export function wrapGeminiModel<T extends GeminiModelLike>(model: T, recorder: RecorderArg): T {
+  const { pricing } = recorder;
   return {
     ...model,
     generateContent: async (request: GeminiRequest) =>
-      _generateWithRecording(model, recorder, request, false),
+      _generateWithRecording(model, recorder, request, pricing),
 
     generateContentStream: async (request: GeminiRequest) =>
-      _generateStreamWithRecording(model, recorder, request),
+      _generateStreamWithRecording(model, recorder, request, pricing),
   } as T;
 }
 
@@ -84,7 +87,7 @@ async function _generateWithRecording(
   model: GeminiModelLike,
   recorder: Recorder,
   request: GeminiRequest,
-  _streaming: boolean
+  pricing: PricingOverrides | undefined
 ): Promise<GeminiGenerateContentResult> {
   const hasSession = recorder.session?.status === "recording";
   const promptText = _extractPromptText(request);
@@ -101,7 +104,7 @@ async function _generateWithRecording(
     const result = await model.generateContent(request);
 
     if (hasSession) {
-      _recordResult(recorder, model.model, result.response);
+      _recordResult(recorder, model.model, result.response, pricing);
     }
     return result;
   } catch (err) {
@@ -119,7 +122,8 @@ async function _generateWithRecording(
 async function _generateStreamWithRecording(
   model: GeminiModelLike,
   recorder: Recorder,
-  request: GeminiRequest
+  request: GeminiRequest,
+  pricing: PricingOverrides | undefined
 ): Promise<GeminiGenerateContentStreamResult> {
   const hasSession = recorder.session?.status === "recording";
   const promptText = _extractPromptText(request);
@@ -172,7 +176,7 @@ async function _generateStreamWithRecording(
 
     if (hasSession) {
       const finalResponse = await streamResult.response;
-      _recordResult(recorder, modelName, finalResponse);
+      _recordResult(recorder, modelName, finalResponse, pricing);
     }
   }
 
@@ -185,7 +189,8 @@ async function _generateStreamWithRecording(
 function _recordResult(
   recorder: Recorder,
   modelName: string,
-  response: GeminiGenerateContentResult["response"]
+  response: GeminiGenerateContentResult["response"],
+  pricing: PricingOverrides | undefined
 ): void {
   const candidate = response.candidates?.[0];
   const usage = response.usageMetadata;
@@ -210,7 +215,7 @@ function _recordResult(
     totalTokens: usage?.totalTokenCount,
     estimatedCost:
       usage?.promptTokenCount != null && usage?.candidatesTokenCount != null
-        ? estimateCost(modelName, usage.promptTokenCount, usage.candidatesTokenCount)
+        ? estimateCost(modelName, usage.promptTokenCount, usage.candidatesTokenCount, pricing)
         : undefined,
   });
 }

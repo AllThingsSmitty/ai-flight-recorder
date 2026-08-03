@@ -21,7 +21,9 @@
  */
 
 import type { Recorder } from "@ai-flight-recorder/core";
-import { estimateCost } from "./pricing";
+import { estimateCost, type PricingOverrides } from "./pricing";
+
+type RecorderArg = Recorder & { pricing?: PricingOverrides };
 
 // ── Minimal interface types (no hard dep on "openai" package) ─────────────────
 
@@ -100,7 +102,8 @@ export interface OpenAIClientLike {
  * Returns a wrapped OpenAI client. All other methods are forwarded to the
  * original. Only `chat.completions.create` is intercepted.
  */
-export function wrapOpenAI<T extends OpenAIClientLike>(client: T, recorder: Recorder): T {
+export function wrapOpenAI<T extends OpenAIClientLike>(client: T, recorder: RecorderArg): T {
+  const { pricing } = recorder;
   return {
     ...client,
     chat: {
@@ -108,7 +111,7 @@ export function wrapOpenAI<T extends OpenAIClientLike>(client: T, recorder: Reco
       completions: {
         ...client.chat.completions,
         create: async (params: OAIChatCreateParams) =>
-          _createWithRecording(client, recorder, params),
+          _createWithRecording(client, recorder, params, pricing),
       },
     },
   } as T;
@@ -117,7 +120,8 @@ export function wrapOpenAI<T extends OpenAIClientLike>(client: T, recorder: Reco
 async function _createWithRecording(
   client: OpenAIClientLike,
   recorder: Recorder,
-  params: OAIChatCreateParams
+  params: OAIChatCreateParams,
+  pricing: PricingOverrides | undefined
 ): Promise<OAIChatCompletion | AsyncGenerator<OAIChatCompletionChunk>> {
   const hasSession = recorder.session?.status === "recording";
 
@@ -142,11 +146,11 @@ async function _createWithRecording(
     const result = await client.chat.completions.create(params);
 
     if (params.stream) {
-      return _wrapStream(result as AsyncIterable<OAIChatCompletionChunk>, recorder, params.model, hasSession);
+      return _wrapStream(result as AsyncIterable<OAIChatCompletionChunk>, recorder, params.model, hasSession, pricing);
     }
 
     if (hasSession) {
-      _recordCompletion(recorder, result as OAIChatCompletion);
+      _recordCompletion(recorder, result as OAIChatCompletion, pricing);
     }
     return result as OAIChatCompletion;
   } catch (err) {
@@ -165,7 +169,8 @@ async function* _wrapStream(
   stream: AsyncIterable<OAIChatCompletionChunk>,
   recorder: Recorder,
   model: string,
-  hasSession: boolean
+  hasSession: boolean,
+  pricing: PricingOverrides | undefined
 ): AsyncGenerator<OAIChatCompletionChunk> {
   let tokenIndex = 0;
   let assembled = "";
@@ -231,11 +236,11 @@ async function* _wrapStream(
     completionTokens: usage?.completion_tokens,
     totalTokens: usage?.total_tokens,
     estimatedCost:
-      usage ? estimateCost(model, usage.prompt_tokens, usage.completion_tokens) : undefined,
+      usage ? estimateCost(model, usage.prompt_tokens, usage.completion_tokens, pricing) : undefined,
   });
 }
 
-function _recordCompletion(recorder: Recorder, response: OAIChatCompletion): void {
+function _recordCompletion(recorder: Recorder, response: OAIChatCompletion, pricing: PricingOverrides | undefined): void {
   const choice = response.choices[0];
   if (!choice) return;
 
@@ -256,7 +261,7 @@ function _recordCompletion(recorder: Recorder, response: OAIChatCompletion): voi
     completionTokens: response.usage?.completion_tokens,
     totalTokens: response.usage?.total_tokens,
     estimatedCost: response.usage
-      ? estimateCost(response.model, response.usage.prompt_tokens, response.usage.completion_tokens)
+      ? estimateCost(response.model, response.usage.prompt_tokens, response.usage.completion_tokens, pricing)
       : undefined,
   });
 }

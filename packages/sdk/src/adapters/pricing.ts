@@ -1,8 +1,10 @@
 // Per-token pricing in USD. Approximate — verify against provider pricing pages.
 // Values are per single token (not per 1M).
-const PRICING: Record<string, { input: number; output: number }> = {
+export type PricingOverrides = Record<string, { input: number; output: number }>;
+
+const PRICING: PricingOverrides = {
   // ── OpenAI ──────────────────────────────────────────────────────────────
-  "gpt-4o":                   { input: 5    / 1_000_000, output: 15    / 1_000_000 },
+  "gpt-4o":                   { input: 2.50 / 1_000_000, output: 10    / 1_000_000 },
   "gpt-4o-mini":              { input: 0.15 / 1_000_000, output: 0.6   / 1_000_000 },
   "gpt-4-turbo":              { input: 10   / 1_000_000, output: 30    / 1_000_000 },
   "gpt-4":                    { input: 30   / 1_000_000, output: 60    / 1_000_000 },
@@ -11,6 +13,7 @@ const PRICING: Record<string, { input: number; output: number }> = {
   "o1-mini":                  { input: 3    / 1_000_000, output: 12    / 1_000_000 },
   // ── Anthropic ────────────────────────────────────────────────────────────
   "claude-opus-4-8":                  { input: 15   / 1_000_000, output: 75   / 1_000_000 },
+  "claude-opus-4-5":                  { input: 15   / 1_000_000, output: 75   / 1_000_000 },
   "claude-sonnet-4-5":                { input: 3    / 1_000_000, output: 15   / 1_000_000 },
   "claude-haiku-4-5":                 { input: 0.8  / 1_000_000, output: 4    / 1_000_000 },
   "claude-3-5-sonnet-20241022":       { input: 3    / 1_000_000, output: 15   / 1_000_000 },
@@ -33,18 +36,23 @@ const PRICING: Record<string, { input: number; output: number }> = {
 export function estimateCost(
   model: string,
   promptTokens: number,
-  completionTokens: number
+  completionTokens: number,
+  overrides?: PricingOverrides
 ): number | undefined {
-  const pricing = PRICING[model] ?? prefixMatch(model);
+  const table = overrides ? { ...PRICING, ...overrides } : PRICING;
+  const pricing = table[model] ?? prefixMatch(model, table);
   if (!pricing) return undefined;
   return promptTokens * pricing.input + completionTokens * pricing.output;
 }
 
-function prefixMatch(model: string): { input: number; output: number } | undefined {
+function prefixMatch(
+  model: string,
+  table: PricingOverrides
+): { input: number; output: number } | undefined {
   // Longest key that is a prefix of `model` wins
   let best: string | undefined;
-  for (const key of Object.keys(PRICING)) {
+  for (const key of Object.keys(table)) {
     if (model.startsWith(key) && (!best || key.length > best.length)) best = key;
   }
-  return best ? PRICING[best] : undefined;
+  return best ? table[best] : undefined;
 }

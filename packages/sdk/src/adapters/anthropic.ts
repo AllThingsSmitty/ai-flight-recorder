@@ -19,7 +19,9 @@
  */
 
 import type { Recorder } from "@ai-flight-recorder/core";
-import { estimateCost } from "./pricing";
+import { estimateCost, type PricingOverrides } from "./pricing";
+
+type RecorderArg = Recorder & { pricing?: PricingOverrides };
 
 // ── Minimal interface types ───────────────────────────────────────────────────
 
@@ -82,13 +84,14 @@ export interface AnthropicClientLike {
 
 // ── Adapter ───────────────────────────────────────────────────────────────────
 
-export function wrapAnthropic<T extends AnthropicClientLike>(client: T, recorder: Recorder): T {
+export function wrapAnthropic<T extends AnthropicClientLike>(client: T, recorder: RecorderArg): T {
+  const { pricing } = recorder;
   return {
     ...client,
     messages: {
       ...client.messages,
       create: async (params: AnthropicCreateParams) =>
-        _createWithRecording(client, recorder, params),
+        _createWithRecording(client, recorder, params, pricing),
     },
   } as T;
 }
@@ -96,7 +99,8 @@ export function wrapAnthropic<T extends AnthropicClientLike>(client: T, recorder
 async function _createWithRecording(
   client: AnthropicClientLike,
   recorder: Recorder,
-  params: AnthropicCreateParams
+  params: AnthropicCreateParams,
+  pricing: PricingOverrides | undefined
 ): Promise<AnthropicMessageResponse | AsyncGenerator<AnthropicStreamEvent>> {
   const hasSession = recorder.session?.status === "recording";
 
@@ -128,12 +132,13 @@ async function _createWithRecording(
         result as AsyncIterable<AnthropicStreamEvent>,
         recorder,
         params.model,
-        hasSession
+        hasSession,
+        pricing
       );
     }
 
     if (hasSession) {
-      _recordResponse(recorder, result as AnthropicMessageResponse);
+      _recordResponse(recorder, result as AnthropicMessageResponse, pricing);
     }
     return result as AnthropicMessageResponse;
   } catch (err) {
@@ -152,7 +157,8 @@ async function* _wrapStream(
   stream: AsyncIterable<AnthropicStreamEvent>,
   recorder: Recorder,
   model: string,
-  hasSession: boolean
+  hasSession: boolean,
+  pricing: PricingOverrides | undefined
 ): AsyncGenerator<AnthropicStreamEvent> {
   let tokenIndex = 0;
   let assembled = "";
@@ -235,11 +241,11 @@ async function* _wrapStream(
     promptTokens: inputTokens,
     completionTokens: outputTokens,
     totalTokens: inputTokens + outputTokens,
-    estimatedCost: estimateCost(model, inputTokens, outputTokens),
+    estimatedCost: estimateCost(model, inputTokens, outputTokens, pricing),
   });
 }
 
-function _recordResponse(recorder: Recorder, response: AnthropicMessageResponse): void {
+function _recordResponse(recorder: Recorder, response: AnthropicMessageResponse, pricing: PricingOverrides | undefined): void {
   for (const block of response.content) {
     if (block.type === "tool_use" && block.id && block.name) {
       recorder.record({
@@ -266,7 +272,8 @@ function _recordResponse(recorder: Recorder, response: AnthropicMessageResponse)
     estimatedCost: estimateCost(
       response.model,
       response.usage.input_tokens,
-      response.usage.output_tokens
+      response.usage.output_tokens,
+      pricing
     ),
   });
 }

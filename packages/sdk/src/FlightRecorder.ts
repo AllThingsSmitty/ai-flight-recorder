@@ -8,8 +8,10 @@ import {
   StartSessionOptions,
   Transport,
 } from "@ai-flight-recorder/core";
+import type { PricingOverrides } from "./adapters/pricing";
 
 export type { AIEvent, Plugin, RecordableEvent, Session, StartSessionOptions, Transport };
+export type { PricingOverrides };
 
 export interface FlightRecorderOptions {
   /** Plugins to install immediately. More can be added later with `use()`. */
@@ -19,6 +21,12 @@ export interface FlightRecorderOptions {
    * immediately after `endSession()` completes.
    */
   transport?: Transport;
+  /**
+   * Per-model pricing overrides merged on top of the built-in table.
+   * Pass to `wrap*` adapter functions so cost estimates use your rates.
+   * Keys match exactly or are a prefix of the model string.
+   */
+  pricing?: PricingOverrides;
 }
 
 /**
@@ -41,9 +49,11 @@ export class FlightRecorder {
   private _recorder = new Recorder();
   private _plugins: Plugin[] = [];
   private _transport?: Transport;
+  readonly pricing: PricingOverrides | undefined;
 
   constructor(options: FlightRecorderOptions = {}) {
     this._transport = options.transport;
+    this.pricing = options.pricing;
 
     // Subscribe once to the recorder; fan out to all registered plugins
     this._recorder.subscribe((event) => {
