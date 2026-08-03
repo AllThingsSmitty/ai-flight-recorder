@@ -8,6 +8,10 @@ export default defineConfig({
 		starlight({
 			title: 'AI Flight Recorder',
 			description: 'Chrome DevTools for AI Applications',
+			logo: {
+				src: './src/assets/logo.svg',
+				alt: 'AI Flight Recorder',
+			},
 			social: [
 				{
 					icon: 'github',
