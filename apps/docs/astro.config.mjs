@@ -9,6 +9,9 @@ export default defineConfig({
       title: "AI Flight Recorder",
       description: "DevTools for AI Applications",
       favicon: "/favicon.svg",
+      components: {
+        Footer: "./src/components/Footer.astro",
+      },
       logo: {
         src: "./src/assets/logo.svg",
         alt: "AI Flight Recorder",

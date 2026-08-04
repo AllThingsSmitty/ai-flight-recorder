@@ -1,0 +1,50 @@
+---
+import EditLink from "virtual:starlight/components/EditLink";
+import LastUpdated from "virtual:starlight/components/LastUpdated";
+import Pagination from "virtual:starlight/components/Pagination";
+---
+<footer class="sl-flex">
+  <div class="meta sl-flex">
+    <EditLink />
+    <LastUpdated />
+  </div>
+  <Pagination />
+</footer>
+<div class="site-footer">
+  <p>
+    <a href="https://github.com/AllThingsSmitty/ai-flight-recorder">GitHub</a>  &middot;  MIT License  &middot;  &copy; {new Date().getFullYear()} Matt Smith
+  </p>
+</div>
+
+<style>
+  footer {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .meta {
+    gap: 0.75rem 3rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+
+  .site-footer {
+    margin-top: 1rem;
+    padding: 1.5rem 0;
+    text-align: center;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+
+  .site-footer a {
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+  }
+
+  .site-footer a:hover {
+    color: var(--sl-color-white);
+  }
+</style>
