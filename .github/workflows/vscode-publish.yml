@@ -32,10 +32,10 @@ jobs:
         run: pnpm --filter @ai-flight-recorder/core build
 
       - name: Install vsce
-        run: npm install -g @vscode/vsce
+        run: npm install -g @vscode/vsce@3
 
       - name: Publish extension
         working-directory: apps/vscode
-        run: vsce publish --no-dependencies
+        run: vsce publish --no-dependencies --pat "$VSCE_PAT"
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
