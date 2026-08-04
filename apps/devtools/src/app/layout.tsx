@@ -3,10 +3,14 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "AI Flight Recorder",
-  description: "Chrome DevTools for AI applications",
+  description: "DevTools for AI applications",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className="dark">
       <body>{children}</body>

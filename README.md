@@ -1,6 +1,6 @@
 # AI Flight Recorder
 
-> Chrome DevTools for AI Applications
+> DevTools for AI Applications
 
 AI Flight Recorder is an open-source developer tool for recording, replaying, and inspecting every interaction in an AI application — prompts, streamed tokens, tool calls, latency, and cost — all in one place.
 

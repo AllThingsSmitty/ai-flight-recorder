@@ -1,12 +1,12 @@
 ---
 title: AI Flight Recorder
-description: Chrome DevTools for AI Applications — record, replay, and inspect every AI interaction in your application.
+description: DevTools for AI Applications — record, replay, and inspect every AI interaction in your application.
 template: splash
 head:
   - tag: title
     content: AI Flight Recorder
 hero:
-  tagline: Chrome DevTools for AI Applications
+  tagline: DevTools for AI Applications
   actions:
     - text: Get Started
       link: /getting-started/installation/
@@ -21,25 +21,29 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from "@astrojs/starlight/components";
 
 Instead of piecing together console logs after the fact, drop in a one-line SDK wrapper and get a full DevTools-style timeline you can pause, rewind, and hand off to a teammate as a `.flight` file.
 
 <CardGrid stagger>
   <Card title="Session recording" icon="document">
-    Capture every prompt, token, tool call, and completion as a structured event stream.
+    Capture every prompt, token, tool call, and completion as a structured event
+    stream.
   </Card>
   <Card title="Streaming replay" icon="right-arrow">
     Watch sessions play back in real time with speed controls from 0.25× to 8×.
   </Card>
   <Card title="Cost analysis" icon="star">
-    Break down token usage and estimated spend per session across OpenAI, Anthropic, and Gemini.
+    Break down token usage and estimated spend per session across OpenAI,
+    Anthropic, and Gemini.
   </Card>
   <Card title="Provider adapters" icon="puzzle">
-    Drop-in wrappers for OpenAI, Anthropic, and Google Gemini — streaming and non-streaming.
+    Drop-in wrappers for OpenAI, Anthropic, and Google Gemini — streaming and
+    non-streaming.
   </Card>
   <Card title=".flight export" icon="forward-slash">
-    Share a session as a portable file another developer can open and replay locally.
+    Share a session as a portable file another developer can open and replay
+    locally.
   </Card>
   <Card title="VS Code extension" icon="setting">
     Open `.flight` files directly in VS Code with a built-in timeline viewer.
