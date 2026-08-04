@@ -38,7 +38,10 @@ export default defineConfig({
 				},
 				{
 					label: 'Reference',
-					items: [{ label: '.flight Format', slug: 'reference/flight-format' }],
+					items: [
+						{ label: '.flight Format', slug: 'reference/flight-format' },
+						{ label: 'OpenTelemetry Export', slug: 'reference/opentelemetry' },
+					],
 				},
 				{
 					label: 'Tools',
