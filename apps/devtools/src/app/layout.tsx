@@ -4,6 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "AI Flight Recorder",
   description: "DevTools for AI applications",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({
