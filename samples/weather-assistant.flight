@@ -1,0 +1,123 @@
+{
+  "version": "1",
+  "exportedAt": 1754308860000,
+  "session": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "label": "weather-assistant",
+    "status": "ended",
+    "startedAt": 1754308800000,
+    "endedAt": 1754308802341,
+    "events": [
+      {
+        "id": "evt-001",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "session-started",
+        "timestamp": 1754308800000
+      },
+      {
+        "id": "evt-002",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "prompt",
+        "timestamp": 1754308800082,
+        "model": "gpt-4o",
+        "systemPrompt": "You are a helpful weather assistant. Use the get_weather tool to look up current conditions.",
+        "prompt": "What's the weather like in New York right now? Should I bring an umbrella?",
+        "temperature": 0.7,
+        "maxTokens": 1024
+      },
+      {
+        "id": "evt-003",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "tool-call",
+        "timestamp": 1754308800934,
+        "toolName": "get_weather",
+        "toolCallId": "call_xK9mN2pQ",
+        "input": {
+          "location": "New York, NY",
+          "units": "imperial"
+        }
+      },
+      {
+        "id": "evt-004",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "tool-result",
+        "timestamp": 1754308801204,
+        "toolCallId": "call_xK9mN2pQ",
+        "output": {
+          "location": "New York, NY",
+          "temperature": 68,
+          "units": "imperial",
+          "condition": "Partly cloudy",
+          "humidity": 74,
+          "precipitation_chance": 60,
+          "wind_speed": 12
+        },
+        "success": true,
+        "durationMs": 270
+      },
+      {
+        "id": "evt-005",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "token",
+        "timestamp": 1754308801498,
+        "token": "It",
+        "index": 0
+      },
+      {
+        "id": "evt-006",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "token",
+        "timestamp": 1754308801512,
+        "token": "'s",
+        "index": 1
+      },
+      {
+        "id": "evt-007",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "token",
+        "timestamp": 1754308801527,
+        "token": " currently",
+        "index": 2
+      },
+      {
+        "id": "evt-008",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "token",
+        "timestamp": 1754308801541,
+        "token": " 68°F",
+        "index": 3
+      },
+      {
+        "id": "evt-009",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "token",
+        "timestamp": 1754308801558,
+        "token": " and partly cloudy",
+        "index": 4,
+        "isFinal": true
+      },
+      {
+        "id": "evt-010",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "completion",
+        "timestamp": 1754308802198,
+        "response": "It's currently 68°F and partly cloudy in New York. With a 60% chance of precipitation and humidity at 74%, yes — definitely bring an umbrella. Winds are around 12 mph.",
+        "finishReason": "stop",
+        "promptTokens": 89,
+        "completionTokens": 41,
+        "totalTokens": 130,
+        "estimatedCost": 0.000633
+      },
+      {
+        "id": "evt-011",
+        "sessionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "type": "session-ended",
+        "timestamp": 1754308802341,
+        "durationMs": 2341,
+        "totalEvents": 11,
+        "totalTokens": 130,
+        "estimatedCost": 0.000633
+      }
+    ]
+  }
+}
