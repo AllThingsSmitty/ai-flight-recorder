@@ -113,7 +113,7 @@ export function Toolbar() {
 
       <div className="w-px h-5 bg-[#2a2a2d]" />
 
-      <span className="text-[11px] text-zinc-600 font-mono">v1.0.1</span>
+      <span className="text-[11px] text-zinc-600 font-mono">v0.1.2</span>
     </header>
   );
 }
