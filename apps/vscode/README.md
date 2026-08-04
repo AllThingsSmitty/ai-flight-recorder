@@ -16,6 +16,10 @@ When you use the [AI Flight Recorder SDK](https://www.npmjs.com/package/@ai-flig
 - **JSON inspector** — click any event row to expand the full structured payload
 - **Zero setup** — just open a `.flight` file
 
+## Try it now
+
+Download [`weather-assistant.flight`](https://github.com/AllThingsSmitty/ai-flight-recorder/raw/main/samples/weather-assistant.flight) — a sample recording with a tool call, streaming tokens, and a completion — and open it in VS Code to see the viewer immediately.
+
 ## Getting started
 
 Install the SDK in your project:
