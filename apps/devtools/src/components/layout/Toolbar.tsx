@@ -51,7 +51,7 @@ export function Toolbar() {
     <header className="flex items-center gap-4 px-5 py-3 border-b border-[#2a2a2d] bg-[#0d0d0e] shrink-0 relative">
       {/* Logo */}
       <div className="flex items-center gap-2">
-        <FlightIcon className="w-5 h-5 text-blue-400" />
+        <FlightIcon className="w-5 h-5" />
         <span className="text-sm font-semibold text-zinc-100 tracking-tight">
           AI Flight Recorder
         </span>
@@ -122,17 +122,25 @@ function FlightIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
+      viewBox="0 0 128 128"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        d="M21 16l-9-4-9 4 9-12 9 12z"
+      <rect x="14" y="36" width="100" height="60" rx="10" fill="#f97316" />
+      <rect x="14" y="36" width="100" height="18" rx="10" fill="#c2410c" />
+      <rect x="14" y="46" width="100" height="8" fill="#c2410c" />
+      <polyline
+        points="26,67 38,50 50,80 62,57 74,73 86,48 102,67"
+        fill="none"
+        stroke="white"
+        strokeWidth="4"
         strokeLinecap="round"
         strokeLinejoin="round"
+        opacity="0.95"
       />
-      <path d="M12 4v8" strokeLinecap="round" />
+      <circle cx="97" cy="45" r="6" fill="#fef2f2" />
+      <circle cx="97" cy="45" r="3.5" fill="#ef4444" />
+      <circle cx="26" cy="85" r="3.5" fill="#ea6a00" />
+      <circle cx="102" cy="85" r="3.5" fill="#ea6a00" />
     </svg>
   );
 }

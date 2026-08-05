@@ -11,11 +11,11 @@ description: Export AI Flight Recorder sessions as OTLP trace payloads for inges
 import { FlightRecorder, toOtlp } from "@ai-flight-recorder/sdk";
 
 const recorder = new FlightRecorder();
-recorder.start();
+recorder.startSession();
 
 // ... run your AI interactions ...
 
-const session = recorder.end();
+const session = recorder.endSession();
 const payload = toOtlp(session);
 ```
 
@@ -76,4 +76,4 @@ String attribute values are clipped to 256 characters.
 
 - The session `id` (UUID) is used as the OTLP `traceId` (with hyphens stripped).
 - `session-started` and `session-ended` events are included as spans on the root trace.
-- The root span's `endTimeUnixNano` uses `session.endedAt` — call `recorder.end()` before exporting.
+- The root span's `endTimeUnixNano` uses `session.endedAt` — call `recorder.endSession()` before exporting.

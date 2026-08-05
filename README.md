@@ -53,7 +53,7 @@ ai-flight-recorder/
 ### Prerequisites
 
 - Node.js 18+
-- pnpm 9+
+- pnpm 10+
 
 ### Install dependencies
 
