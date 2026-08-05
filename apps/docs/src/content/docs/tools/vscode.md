@@ -7,14 +7,20 @@ The VS Code extension adds a custom editor for `.flight` files, letting you insp
 
 ## Installation
 
-The extension is not yet published to the VS Code Marketplace. Build it from source and install the `.vsix` manually:
+Install from the VS Code Marketplace by searching for **AI Flight Recorder** or by running:
+
+```bash
+code --install-extension AllThingsSmitty.ai-flight-recorder
+```
+
+Alternatively, install manually from source:
 
 ```bash
 cd apps/vscode
 pnpm install
 pnpm run vscode:prepublish
-npx @vscode/vsce package   # produces flight-recorder-<version>.vsix
-code --install-extension flight-recorder-<version>.vsix
+npx @vscode/vsce package   # produces ai-flight-recorder-<version>.vsix
+code --install-extension ai-flight-recorder-<version>.vsix
 ```
 
 Or use the **Extensions: Install from VSIX...** command in VS Code after building.
