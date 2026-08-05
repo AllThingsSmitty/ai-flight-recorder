@@ -41,7 +41,7 @@ Adapters live in `packages/sdk/src/adapters/`. When adding support for a new AI 
 - Use `import type` only — no hard runtime dependency on the provider SDK.
 - Handle both streaming and non-streaming responses.
 - Record `prompt`, `token`, `tool-call`, `tool-result`, and `completion` events as appropriate.
-- Add pricing entries to the pricing table in `packages/sdk/src/pricing.ts`.
+- Add pricing entries to the pricing table in `packages/sdk/src/adapters/pricing.ts`.
 - Cover the adapter in `scripts/smoke.ts`.
 
 ### New Event Types
