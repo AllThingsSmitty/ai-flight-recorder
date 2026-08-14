@@ -103,11 +103,15 @@ export class FlightRecorder {
     const session = this._recorder.endSession();
 
     if (this._transport) {
-      const result = this._transport.save(session);
-      if (result instanceof Promise) {
-        result.catch((err) =>
-          console.error("[flight-recorder] Transport save failed:", err)
-        );
+      try {
+        const result = this._transport.save(session);
+        if (result instanceof Promise) {
+          result.catch((err) =>
+            console.error("[flight-recorder] Transport save failed:", err)
+          );
+        }
+      } catch (err) {
+        console.error("[flight-recorder] Transport save failed:", err);
       }
     }
 
