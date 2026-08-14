@@ -58,6 +58,8 @@ export class Recorder {
       throw new Error("No active recording session. Call startSession() first.");
     }
 
+    // TypeScript can't prove the spread reconstitutes the discriminated union — safe because
+    // RecordableEvent is AIEvent minus only the three auto-generated fields added here.
     const event = {
       ...partial,
       id: generateId(),
