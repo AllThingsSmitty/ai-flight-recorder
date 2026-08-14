@@ -10,6 +10,7 @@ interface ReplayStore {
   /** Event IDs that have been "emitted" during replay */
   visibleEventIds: Set<string>;
   isReplayMode: boolean;
+  _unsubs: Array<() => void>;
 
   initReplay: (session: Session) => void;
   exitReplay: () => void;
@@ -25,6 +26,7 @@ export const useReplayStore = create<ReplayStore>((set, get) => ({
   replayState: null,
   visibleEventIds: new Set(),
   isReplayMode: false,
+  _unsubs: [],
 
   initReplay: (session) => {
     const { engine: prev } = get();
@@ -51,28 +53,20 @@ export const useReplayStore = create<ReplayStore>((set, get) => ({
       }));
     });
 
-    // Store cleanup in the engine instance as a side channel
-    (engine as unknown as { _cleanup?: () => void })._cleanup = () => {
-      unsubState();
-      unsubEvent();
-      unsubEnded();
-    };
-
     set({
       engine,
       replayState: engine.getState(),
       visibleEventIds: new Set(),
       isReplayMode: true,
+      _unsubs: [unsubState, unsubEvent, unsubEnded],
     });
   },
 
   exitReplay: () => {
-    const { engine } = get();
-    if (engine) {
-      engine.reset();
-      (engine as unknown as { _cleanup?: () => void })._cleanup?.();
-    }
-    set({ engine: null, replayState: null, visibleEventIds: new Set(), isReplayMode: false });
+    const { engine, _unsubs } = get();
+    engine?.reset();
+    _unsubs.forEach((fn) => fn());
+    set({ engine: null, replayState: null, visibleEventIds: new Set(), isReplayMode: false, _unsubs: [] });
   },
 
   play: () => get().engine?.play(),
