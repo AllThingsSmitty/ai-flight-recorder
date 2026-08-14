@@ -32,7 +32,7 @@ export class FlightEditorProvider
       ],
     };
 
-    const raw = fs.readFileSync(document.uri.fsPath, "utf-8");
+    const raw = await fs.promises.readFile(document.uri.fsPath, "utf-8");
     let session: unknown;
     try {
       session = deserializeSession(raw);
