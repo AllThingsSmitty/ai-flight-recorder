@@ -117,9 +117,7 @@ function errorHtml(message: string): string {
 }
 
 function genNonce(): string {
-  return (
-    Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
-  );
+  return crypto.randomUUID().replace(/-/g, "");
 }
 
 function escHtml(s: string): string {

@@ -1,4 +1,4 @@
-import type { AIEvent, Plugin, Session } from "@ai-flight-recorder/core";
+import type { AIEvent, Plugin, Session, SessionEndedEvent } from "@ai-flight-recorder/core";
 
 export interface ConsoleLogPluginOptions {
   /** Log individual events as they are recorded. Default: true */
@@ -54,8 +54,10 @@ export class ConsoleLogPlugin implements Plugin {
   onSessionEnd(session: Session): void {
     if (!this._logSummary) return;
 
-    const endEvent = session.events.find((e) => e.type === "session-ended");
-    if (!endEvent || endEvent.type !== "session-ended") return;
+    const endEvent = session.events.find((e) => e.type === "session-ended") as
+      | SessionEndedEvent
+      | undefined;
+    if (!endEvent) return;
 
     const durationSec = (endEvent.durationMs / 1000).toFixed(2);
     const tokens = endEvent.totalTokens ?? 0;
