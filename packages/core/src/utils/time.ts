@@ -10,6 +10,3 @@ export function formatTimestamp(timestamp: number): string {
   return new Date(timestamp).toISOString();
 }
 
-export function relativeTimeMs(from: number, to: number): number {
-  return to - from;
-}

@@ -66,8 +66,8 @@ export class FileTransport implements Transport {
     for (const file of files) {
       try {
         sessions.push(this.load(file));
-      } catch {
-        // Skip files that fail to parse — they may be corrupted
+      } catch (err) {
+        console.warn(`[FileTransport] Failed to load ${file}:`, err);
       }
     }
     return sessions;
