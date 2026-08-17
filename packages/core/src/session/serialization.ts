@@ -1,5 +1,16 @@
 import type { Session } from "./Session";
 
+// Known event types at this schema version. Used to warn (not reject) unknown types so
+// .flight files from newer SDK versions can still be opened by older DevTools builds.
+const KNOWN_EVENT_TYPES = new Set([
+  "session-started", "session-ended",
+  "prompt", "token", "tool-call", "tool-result", "completion", "error",
+  "mcp-server-connected", "mcp-server-disconnected", "mcp-tools-listed",
+  "mcp-tool-call", "mcp-tool-result",
+  "retrieval-query", "retrieval-result",
+  "agent-run-started", "agent-run-ended", "agent-step", "agent-handoff",
+]);
+
 export const FLIGHT_FILE_VERSION = "1" as const;
 
 /** Envelope stored in a `.flight` file */
@@ -114,6 +125,16 @@ function _validateSession(raw: unknown): asserts raw is Session {
           `Invalid .flight file: session.events[${i}] is missing required field '${field}'.`
         );
       }
+    }
+    if (typeof e.type !== "string" || e.type === "") {
+      throw new Error(
+        `Invalid .flight file: session.events[${i}].type must be a non-empty string, got ${JSON.stringify(e.type)}.`
+      );
+    }
+    if (!KNOWN_EVENT_TYPES.has(e.type)) {
+      console.warn(
+        `[ai-flight-recorder] Unknown event type "${e.type}" at events[${i}] — file may be from a newer SDK version.`
+      );
     }
   }
 }

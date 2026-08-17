@@ -39,7 +39,8 @@ export interface OtlpPayload {
 
 export function toOtlp(session: Session): OtlpPayload {
   const traceId = session.id.replace(/-/g, "");
-  const rootSpanId = traceId.slice(0, 16);
+  // Generate the root span ID independently — taking a prefix of traceId violates the OTLP spec.
+  const rootSpanId = crypto.randomUUID().replace(/-/g, "").slice(0, 16);
   const totalTokens = sessionTotalTokens(session);
   const estimatedCost = sessionEstimatedCost(session);
 
