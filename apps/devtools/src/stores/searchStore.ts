@@ -48,6 +48,71 @@ export function matchesQuery(event: AIEvent, q: string): boolean {
       return event.message.toLowerCase().includes(lower);
     case "session-started":
       return (event.label ?? "").toLowerCase().includes(lower);
+    case "mcp-server-connected":
+      return (
+        event.serverName.toLowerCase().includes(lower) ||
+        event.transport.toLowerCase().includes(lower) ||
+        (event.serverVersion ?? "").toLowerCase().includes(lower)
+      );
+    case "mcp-server-disconnected":
+      return (
+        event.serverName.toLowerCase().includes(lower) ||
+        (event.reason ?? "").toLowerCase().includes(lower)
+      );
+    case "mcp-tools-listed":
+      return (
+        event.serverName.toLowerCase().includes(lower) ||
+        event.tools.some(
+          (t) =>
+            t.name.toLowerCase().includes(lower) ||
+            (t.description ?? "").toLowerCase().includes(lower)
+        )
+      );
+    case "mcp-tool-call":
+      return (
+        event.serverName.toLowerCase().includes(lower) ||
+        event.toolName.toLowerCase().includes(lower) ||
+        event.toolCallId.toLowerCase().includes(lower) ||
+        JSON.stringify(event.input).toLowerCase().includes(lower)
+      );
+    case "mcp-tool-result":
+      return (
+        event.serverName.toLowerCase().includes(lower) ||
+        event.toolCallId.toLowerCase().includes(lower) ||
+        JSON.stringify(event.output).toLowerCase().includes(lower)
+      );
+    case "retrieval-query":
+      return (
+        event.query.toLowerCase().includes(lower) ||
+        (event.store ?? "").toLowerCase().includes(lower)
+      );
+    case "retrieval-result":
+      return (
+        (event.store ?? "").toLowerCase().includes(lower) ||
+        event.chunks.some((c) => c.content.toLowerCase().includes(lower))
+      );
+    case "agent-run-started":
+      return (
+        event.agentName.toLowerCase().includes(lower) ||
+        (event.goal ?? "").toLowerCase().includes(lower)
+      );
+    case "agent-run-ended":
+      return (
+        event.agentName.toLowerCase().includes(lower) ||
+        event.outcome.toLowerCase().includes(lower)
+      );
+    case "agent-step":
+      return (
+        event.agentName.toLowerCase().includes(lower) ||
+        (event.action ?? "").toLowerCase().includes(lower) ||
+        (event.thought ?? "").toLowerCase().includes(lower)
+      );
+    case "agent-handoff":
+      return (
+        event.fromAgent.toLowerCase().includes(lower) ||
+        event.toAgent.toLowerCase().includes(lower) ||
+        (event.reason ?? "").toLowerCase().includes(lower)
+      );
     default:
       return false;
   }

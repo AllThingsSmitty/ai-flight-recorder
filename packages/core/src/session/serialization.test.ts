@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { serializeSession, deserializeSession, parseFlightFile } from "./serialization";
 import type { Session } from "./Session";
 
@@ -60,6 +60,24 @@ describe("deserializeSession", () => {
     const obj = JSON.parse(serializeSession(session));
     delete obj.exportedAt;
     expect(() => deserializeSession(JSON.stringify(obj))).toThrow();
+  });
+
+  it("throws when an event type is not a string", () => {
+    const session = makeEndedSession();
+    const obj = JSON.parse(serializeSession(session));
+    obj.session.events[0].type = 42;
+    expect(() => deserializeSession(JSON.stringify(obj))).toThrow(/non-empty string/);
+  });
+
+  it("warns but does not throw for an unknown (future) event type", () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const session = makeEndedSession();
+    const obj = JSON.parse(serializeSession(session));
+    obj.session.events[0].type = "future-event-type-v9";
+
+    expect(() => deserializeSession(JSON.stringify(obj))).not.toThrow();
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("future-event-type-v9"));
+    warnSpy.mockRestore();
   });
 });
 
