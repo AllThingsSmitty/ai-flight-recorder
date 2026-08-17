@@ -17,6 +17,7 @@ type RecorderListener = (event: AIEvent) => void;
 
 export class Recorder {
   private _session: Session | null = null;
+  private _events: AIEvent[] = [];
   private _listeners: Set<RecorderListener> = new Set();
 
   get session(): Session | null {
@@ -40,13 +41,14 @@ export class Recorder {
       tags: options.tags,
     };
 
+    this._events = [startEvent];
     this._session = {
       id: sessionId,
       label: options.label,
       tags: options.tags,
       status: "recording" as SessionStatus,
       startedAt,
-      events: [startEvent],
+      events: this._events,
     };
 
     this._emit(startEvent);
@@ -67,11 +69,7 @@ export class Recorder {
       timestamp: Date.now(),
     } as AIEvent;
 
-    this._session = {
-      ...this._session,
-      events: [...this._session.events, event],
-    };
-
+    this._events.push(event);
     this._emit(event);
     return event;
   }
@@ -105,11 +103,11 @@ export class Recorder {
       estimatedCost: estimatedCost > 0 ? estimatedCost : undefined,
     };
 
+    this._events.push(endEvent);
     this._session = {
       ...this._session,
       status: "ended",
       endedAt,
-      events: [...this._session.events, endEvent],
     };
 
     this._emit(endEvent);
