@@ -91,6 +91,22 @@ describe("ReplayEngine", () => {
       engine.seek(50);
       expect(engine.getState().status).toBe("paused");
     });
+
+    it("continues playing from the seeked position", () => {
+      // Events at 0, 100, 200 ms. Seek past the first two while playing.
+      const session = makeEndedSession([0, 100, 200]);
+      const engine = new ReplayEngine(session);
+      const received: string[] = [];
+      engine.on("event", (e) => received.push(e.id));
+
+      engine.play();
+      engine.seek(150); // skip past e0 and e1
+      expect(engine.getState().status).toBe("playing");
+
+      vi.runAllTimers();
+      // Only e2 should fire — e0 and e1 were before the seek point
+      expect(received).toEqual(["e2"]);
+    });
   });
 
   describe("setSpeed", () => {
@@ -98,6 +114,23 @@ describe("ReplayEngine", () => {
       const engine = new ReplayEngine(makeEndedSession());
       engine.setSpeed(2);
       expect(engine.getState().speed).toBe(2);
+    });
+
+    it("halves wall-clock delay at 2× speed", () => {
+      // Events at session time 100 ms and 200 ms.
+      // At 2× speed the first event should fire after 50 ms wall time.
+      const session = makeEndedSession([100, 200]);
+      const engine = new ReplayEngine(session);
+      const received: string[] = [];
+      engine.on("event", (e) => received.push(e.id));
+      engine.setSpeed(2);
+      engine.play();
+
+      vi.advanceTimersByTime(49);
+      expect(received).toHaveLength(0);
+
+      vi.advanceTimersByTime(2); // now at 51 ms — first event should have fired
+      expect(received).toEqual(["e0"]);
     });
   });
 
