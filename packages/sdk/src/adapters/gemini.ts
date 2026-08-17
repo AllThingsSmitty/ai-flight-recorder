@@ -200,7 +200,7 @@ function _recordResult(
       recorder.record({
         type: "tool-call",
         toolName: part.functionCall.name,
-        toolCallId: `gemini-fn-${Date.now()}`,
+        toolCallId: `gemini-fn-${crypto.randomUUID()}`,
         input: part.functionCall.args,
       });
     }
