@@ -142,7 +142,13 @@ export class ReplayEngine {
 
     const nextEvent = events[eventIndex];
     const eventSessionTime = nextEvent.timestamp - this._session.startedAt;
-    const wallDelay = Math.max(0, (eventSessionTime - this._state.currentTime) / speed);
+    // Anchor to wall time rather than currentTime so event-loop latency doesn't
+    // compound — each callback fires slightly late, and summing those deltas drifts.
+    const wallElapsed = Date.now() - this._playStartWallTime;
+    const wallDelay = Math.max(
+      0,
+      (eventSessionTime - this._playStartSessionTime) / speed - wallElapsed
+    );
 
     this._timerId = setTimeout(() => {
       this._emit("event", nextEvent);
