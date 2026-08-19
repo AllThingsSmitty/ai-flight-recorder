@@ -23,22 +23,6 @@ export function downloadSession(session: Session, filename?: string): void {
  * Read a File (from a file input or drag-and-drop) and parse it as a Session.
  * Rejects with a descriptive error if the file is invalid.
  */
-export function readFlightFile(file: File): Promise<Session> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const text = e.target?.result;
-        if (typeof text !== "string") {
-          reject(new Error("Failed to read file as text."));
-          return;
-        }
-        resolve(deserializeSession(text));
-      } catch (err) {
-        reject(err);
-      }
-    };
-    reader.onerror = () => reject(new Error("Failed to read the file."));
-    reader.readAsText(file);
-  });
+export async function readFlightFile(file: File): Promise<Session> {
+  return deserializeSession(await file.text());
 }
