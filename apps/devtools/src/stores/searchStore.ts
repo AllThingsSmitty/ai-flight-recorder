@@ -43,7 +43,7 @@ export function matchesQuery(event: AIEvent, q: string): boolean {
         JSON.stringify(event.input).toLowerCase().includes(lower)
       );
     case "tool-result":
-      return JSON.stringify(event.output).toLowerCase().includes(lower);
+      return JSON.stringify(event.output ?? null).toLowerCase().includes(lower);
     case "error":
       return event.message.toLowerCase().includes(lower);
     case "session-started":
@@ -79,7 +79,7 @@ export function matchesQuery(event: AIEvent, q: string): boolean {
       return (
         event.serverName.toLowerCase().includes(lower) ||
         event.toolCallId.toLowerCase().includes(lower) ||
-        JSON.stringify(event.output).toLowerCase().includes(lower)
+        JSON.stringify(event.output ?? null).toLowerCase().includes(lower)
       );
     case "retrieval-query":
       return (
