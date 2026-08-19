@@ -52,7 +52,7 @@ ai-flight-recorder/
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - pnpm 10+
 
 ### Install dependencies
@@ -129,10 +129,10 @@ fr.endSession();
 
 ```ts
 import Anthropic from "@anthropic-ai/sdk";
-import { FlightRecorder, wrapAnthropic } from "@ai-flight-recorder/sdk";
+import { FlightRecorder, wrapAnthropic, AnthropicClientLike } from "@ai-flight-recorder/sdk";
 
 const fr = new FlightRecorder();
-const client = wrapAnthropic(new Anthropic(), fr.recorder);
+const client = wrapAnthropic(new Anthropic() as unknown as AnthropicClientLike, fr.recorder);
 
 fr.startSession({ label: "claude-chat" });
 
