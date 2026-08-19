@@ -46,7 +46,7 @@ Adapters live in `packages/sdk/src/adapters/`. When adding support for a new AI 
 
 ### New Event Types
 
-New event types are defined in `packages/core/src/events.ts`. When proposing a new event:
+New event types are defined in `packages/core/src/events/`. When proposing a new event:
 
 - Explain the use case (e.g., MCP, RAG, agent actions).
 - Extend `BaseEvent` and add the type to the `AIEvent` union.

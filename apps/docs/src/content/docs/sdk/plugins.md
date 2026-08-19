@@ -68,4 +68,4 @@ Use `.use()` to attach a plugin after the `FlightRecorder` is created. It's chai
 fr.use(pluginA).use(pluginB);
 ```
 
-Registering a plugin with a duplicate name throws immediately at registration time.
+Registering a plugin with a duplicate name logs a warning and skips registration.
