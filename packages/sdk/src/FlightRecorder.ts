@@ -87,10 +87,6 @@ export class FlightRecorder {
     return this._recorder.session;
   }
 
-  get recorder(): Recorder {
-    return this._recorder;
-  }
-
   startSession(options?: StartSessionOptions): Session {
     return this._recorder.startSession(options);
   }

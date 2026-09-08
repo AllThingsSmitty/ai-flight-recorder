@@ -7,20 +7,18 @@
  *   import { FlightRecorder } from "@ai-flight-recorder/sdk";
  *   import { wrapGeminiModel } from "@ai-flight-recorder/sdk/adapters/gemini";
  *
- *   const recorder  = new FlightRecorder();
- *   const genAI     = new GoogleGenerativeAI(apiKey);
- *   const rawModel  = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
- *   const model     = wrapGeminiModel(rawModel, recorder);
+ *   const fr    = new FlightRecorder();
+ *   const genAI = new GoogleGenerativeAI(apiKey);
+ *   const rawModel = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+ *   const model = wrapGeminiModel(rawModel, fr);
  *
- *   recorder.startSession({ label: "my-chat" });
+ *   fr.startSession({ label: "my-chat" });
  *   const result = await model.generateContent("Hello");
- *   recorder.endSession();
+ *   fr.endSession();
  */
 
-import type { Recorder } from "@ai-flight-recorder/core";
+import type { FlightRecorder } from "../FlightRecorder";
 import { estimateCost, type PricingOverrides } from "./pricing";
-
-type RecorderArg = Recorder & { pricing?: PricingOverrides };
 
 // ── Minimal interface types ───────────────────────────────────────────────────
 
@@ -71,7 +69,7 @@ export interface GeminiModelLike {
 
 // ── Adapter ───────────────────────────────────────────────────────────────────
 
-export function wrapGeminiModel<T extends GeminiModelLike>(model: T, recorder: RecorderArg): T {
+export function wrapGeminiModel<T extends GeminiModelLike>(model: T, recorder: FlightRecorder): T {
   const { pricing } = recorder;
   return {
     ...model,
@@ -85,7 +83,7 @@ export function wrapGeminiModel<T extends GeminiModelLike>(model: T, recorder: R
 
 async function _generateWithRecording(
   model: GeminiModelLike,
-  recorder: Recorder,
+  recorder: FlightRecorder,
   request: GeminiRequest,
   pricing: PricingOverrides | undefined
 ): Promise<GeminiGenerateContentResult> {
@@ -121,7 +119,7 @@ async function _generateWithRecording(
 
 async function _generateStreamWithRecording(
   model: GeminiModelLike,
-  recorder: Recorder,
+  recorder: FlightRecorder,
   request: GeminiRequest,
   pricing: PricingOverrides | undefined
 ): Promise<GeminiGenerateContentStreamResult> {
@@ -187,7 +185,7 @@ async function _generateStreamWithRecording(
 }
 
 function _recordResult(
-  recorder: Recorder,
+  recorder: FlightRecorder,
   modelName: string,
   response: GeminiGenerateContentResult["response"],
   pricing: PricingOverrides | undefined

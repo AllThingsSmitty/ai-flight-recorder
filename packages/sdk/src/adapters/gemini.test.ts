@@ -1,13 +1,14 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { wrapGeminiModel } from "./gemini";
-import type { Recorder } from "@ai-flight-recorder/core";
+import { FlightRecorder } from "../FlightRecorder";
 import type { GeminiModelLike, GeminiGenerateContentResult } from "./gemini";
 
-function makeRecorder(recording = true): Recorder {
+function makeRecorder(recording = true): FlightRecorder {
   return {
     session: recording ? { id: "s1", status: "recording" as const, startedAt: 0, events: [] } : null,
     record: vi.fn(),
-  } as unknown as Recorder;
+    pricing: undefined,
+  } as unknown as FlightRecorder;
 }
 
 function makeResult(text: string, finishReason = "STOP", usage = { promptTokenCount: 5, candidatesTokenCount: 3, totalTokenCount: 8 }): GeminiGenerateContentResult {

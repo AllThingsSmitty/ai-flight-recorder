@@ -7,7 +7,7 @@ const transport = new FileTransport("./recordings");
 const fr = new FlightRecorder({ transport });
 // Cast required: the actual Anthropic SDK uses strict overloads that aren't
 // structurally assignable to AnthropicClientLike, but are compatible at runtime.
-const client = wrapAnthropic(new Anthropic() as unknown as AnthropicClientLike, fr.recorder);
+const client = wrapAnthropic(new Anthropic() as unknown as AnthropicClientLike, fr);
 
 fr.startSession({ label: "anthropic-demo" });
 

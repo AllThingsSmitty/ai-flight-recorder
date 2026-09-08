@@ -7,23 +7,21 @@
  *   import { FlightRecorder } from "@ai-flight-recorder/sdk";
  *   import { wrapOpenAI } from "@ai-flight-recorder/sdk/adapters/openai";
  *
- *   const recorder = new FlightRecorder();
- *   const openai   = wrapOpenAI(new OpenAI(), recorder);
- *   recorder.startSession({ label: "my-chat" });
+ *   const fr    = new FlightRecorder();
+ *   const openai = wrapOpenAI(new OpenAI(), fr);
+ *   fr.startSession({ label: "my-chat" });
  *
  *   // All chat.completions.create calls now auto-record
  *   const response = await openai.chat.completions.create({ ... });
- *   recorder.endSession();
+ *   fr.endSession();
  *
  * Limitation: streaming wrappers return an AsyncGenerator, not the full
  * OpenAI Stream object. Use `for await` as normal; .on() / .done() are
  * not available on the wrapped stream.
  */
 
-import type { Recorder } from "@ai-flight-recorder/core";
+import type { FlightRecorder } from "../FlightRecorder";
 import { estimateCost, type PricingOverrides } from "./pricing";
-
-type RecorderArg = Recorder & { pricing?: PricingOverrides };
 
 // ── Minimal interface types (no hard dep on "openai" package) ─────────────────
 
@@ -102,7 +100,7 @@ export interface OpenAIClientLike {
  * Returns a wrapped OpenAI client. All other methods are forwarded to the
  * original. Only `chat.completions.create` is intercepted.
  */
-export function wrapOpenAI<T extends OpenAIClientLike>(client: T, recorder: RecorderArg): T {
+export function wrapOpenAI<T extends OpenAIClientLike>(client: T, recorder: FlightRecorder): T {
   const { pricing } = recorder;
   return {
     ...client,
@@ -119,7 +117,7 @@ export function wrapOpenAI<T extends OpenAIClientLike>(client: T, recorder: Reco
 
 async function _createWithRecording(
   client: OpenAIClientLike,
-  recorder: Recorder,
+  recorder: FlightRecorder,
   params: OAIChatCreateParams,
   pricing: PricingOverrides | undefined
 ): Promise<OAIChatCompletion | AsyncGenerator<OAIChatCompletionChunk>> {
@@ -167,7 +165,7 @@ async function _createWithRecording(
 
 async function* _wrapStream(
   stream: AsyncIterable<OAIChatCompletionChunk>,
-  recorder: Recorder,
+  recorder: FlightRecorder,
   model: string,
   hasSession: boolean,
   pricing: PricingOverrides | undefined
@@ -240,7 +238,7 @@ async function* _wrapStream(
   });
 }
 
-function _recordCompletion(recorder: Recorder, response: OAIChatCompletion, pricing: PricingOverrides | undefined): void {
+function _recordCompletion(recorder: FlightRecorder, response: OAIChatCompletion, pricing: PricingOverrides | undefined): void {
   const choice = response.choices[0];
   if (!choice) return;
 
