@@ -1,5 +1,12 @@
 # @ai-flight-recorder/devtools
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [aebf391]
+  - @ai-flight-recorder/sdk@0.2.0
+
 ## 0.0.2
 
 ### Patch Changes
