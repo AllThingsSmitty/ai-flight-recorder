@@ -20,6 +20,7 @@
 
 import type { FlightRecorder } from "../FlightRecorder";
 import { estimateCost, type PricingOverrides } from "./pricing";
+import { generateId } from "@ai-flight-recorder/core";
 
 // ── Minimal interface types ───────────────────────────────────────────────────
 
@@ -101,8 +102,9 @@ async function _createWithRecording(
   pricing: PricingOverrides | undefined
 ): Promise<AnthropicMessageResponse | AsyncGenerator<AnthropicStreamEvent>> {
   const hasSession = recorder.session?.status === "recording";
+  const rootSpanId = hasSession ? generateId() : undefined;
 
-  if (hasSession) {
+  if (hasSession && rootSpanId) {
     const promptText = params.messages
       .map((m) => {
         const content = typeof m.content === "string"
@@ -119,6 +121,7 @@ async function _createWithRecording(
       systemPrompt: params.system,
       temperature: params.temperature,
       maxTokens: params.max_tokens,
+      parentSpanId: rootSpanId,
     });
   }
 
@@ -131,20 +134,22 @@ async function _createWithRecording(
         recorder,
         params.model,
         hasSession,
-        pricing
+        pricing,
+        rootSpanId
       );
     }
 
-    if (hasSession) {
-      _recordResponse(recorder, result as AnthropicMessageResponse, pricing);
+    if (hasSession && rootSpanId) {
+      _recordResponse(recorder, result as AnthropicMessageResponse, pricing, rootSpanId);
     }
     return result as AnthropicMessageResponse;
   } catch (err) {
-    if (hasSession) {
+    if (hasSession && rootSpanId) {
       recorder.record({
         type: "error",
         message: err instanceof Error ? err.message : String(err),
         stack: err instanceof Error ? err.stack : undefined,
+        parentSpanId: rootSpanId,
       });
     }
     throw err;
@@ -156,7 +161,8 @@ async function* _wrapStream(
   recorder: FlightRecorder,
   model: string,
   hasSession: boolean,
-  pricing: PricingOverrides | undefined
+  pricing: PricingOverrides | undefined,
+  rootSpanId?: string
 ): AsyncGenerator<AnthropicStreamEvent> {
   let tokenIndex = 0;
   let assembled = "";
@@ -189,7 +195,12 @@ async function* _wrapStream(
 
         case "content_block_delta":
           if (event.delta?.type === "text_delta" && event.delta.text) {
-            recorder.record({ type: "token", token: event.delta.text, index: tokenIndex++ });
+            recorder.record({
+              type: "token",
+              token: event.delta.text,
+              index: tokenIndex++,
+              ...(rootSpanId && { parentSpanId: rootSpanId }),
+            });
             assembled += event.delta.text;
           }
           if (event.delta?.type === "input_json_delta" && event.delta.partial_json) {
@@ -204,6 +215,7 @@ async function* _wrapStream(
               toolName: currentToolName,
               toolCallId: currentToolId,
               input: _tryParseJson(currentToolArgs),
+              ...(rootSpanId && { parentSpanId: rootSpanId }),
             });
             currentToolId = undefined;
             currentToolName = undefined;
@@ -220,17 +232,18 @@ async function* _wrapStream(
       }
     }
   } catch (err) {
-    if (hasSession) {
+    if (hasSession && rootSpanId) {
       recorder.record({
         type: "error",
         message: err instanceof Error ? err.message : String(err),
         stack: err instanceof Error ? err.stack : undefined,
+        parentSpanId: rootSpanId,
       });
     }
     throw err;
   }
 
-  if (!hasSession) return;
+  if (!hasSession || !rootSpanId) return;
 
   recorder.record({
     type: "completion",
@@ -240,10 +253,16 @@ async function* _wrapStream(
     completionTokens: outputTokens,
     totalTokens: inputTokens + outputTokens,
     estimatedCost: estimateCost(model, inputTokens, outputTokens, pricing),
+    parentSpanId: rootSpanId,
   });
 }
 
-function _recordResponse(recorder: FlightRecorder, response: AnthropicMessageResponse, pricing: PricingOverrides | undefined): void {
+function _recordResponse(
+  recorder: FlightRecorder,
+  response: AnthropicMessageResponse,
+  pricing: PricingOverrides | undefined,
+  rootSpanId?: string
+): void {
   for (const block of response.content) {
     if (block.type === "tool_use" && block.id && block.name) {
       recorder.record({
@@ -251,6 +270,7 @@ function _recordResponse(recorder: FlightRecorder, response: AnthropicMessageRes
         toolName: block.name,
         toolCallId: block.id,
         input: block.input,
+        ...(rootSpanId && { parentSpanId: rootSpanId }),
       });
     }
   }
@@ -273,6 +293,7 @@ function _recordResponse(recorder: FlightRecorder, response: AnthropicMessageRes
       response.usage.output_tokens,
       pricing
     ),
+    ...(rootSpanId && { parentSpanId: rootSpanId }),
   });
 }
 

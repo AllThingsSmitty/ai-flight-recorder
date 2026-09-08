@@ -22,6 +22,7 @@
 
 import type { FlightRecorder } from "../FlightRecorder";
 import { estimateCost, type PricingOverrides } from "./pricing";
+import { generateId } from "@ai-flight-recorder/core";
 
 // ── Minimal interface types (no hard dep on "openai" package) ─────────────────
 
@@ -122,8 +123,9 @@ async function _createWithRecording(
   pricing: PricingOverrides | undefined
 ): Promise<OAIChatCompletion | AsyncGenerator<OAIChatCompletionChunk>> {
   const hasSession = recorder.session?.status === "recording";
+  const rootSpanId = hasSession ? generateId() : undefined;
 
-  if (hasSession) {
+  if (hasSession && rootSpanId) {
     const systemMsg = params.messages.find((m) => m.role === "system");
     const userMessages = params.messages
       .filter((m) => m.role !== "system")
@@ -137,6 +139,7 @@ async function _createWithRecording(
       systemPrompt: systemMsg?.content ?? undefined,
       temperature: params.temperature,
       maxTokens: params.max_tokens,
+      parentSpanId: rootSpanId,
     });
   }
 
@@ -144,19 +147,20 @@ async function _createWithRecording(
     const result = await client.chat.completions.create(params);
 
     if (params.stream) {
-      return _wrapStream(result as AsyncIterable<OAIChatCompletionChunk>, recorder, params.model, hasSession, pricing);
+      return _wrapStream(result as AsyncIterable<OAIChatCompletionChunk>, recorder, params.model, hasSession, pricing, rootSpanId);
     }
 
-    if (hasSession) {
-      _recordCompletion(recorder, result as OAIChatCompletion, pricing);
+    if (hasSession && rootSpanId) {
+      _recordCompletion(recorder, result as OAIChatCompletion, pricing, rootSpanId);
     }
     return result as OAIChatCompletion;
   } catch (err) {
-    if (hasSession) {
+    if (hasSession && rootSpanId) {
       recorder.record({
         type: "error",
         message: err instanceof Error ? err.message : String(err),
         stack: err instanceof Error ? err.stack : undefined,
+        parentSpanId: rootSpanId,
       });
     }
     throw err;
@@ -168,7 +172,8 @@ async function* _wrapStream(
   recorder: FlightRecorder,
   model: string,
   hasSession: boolean,
-  pricing: PricingOverrides | undefined
+  pricing: PricingOverrides | undefined,
+  rootSpanId?: string
 ): AsyncGenerator<OAIChatCompletionChunk> {
   let tokenIndex = 0;
   let assembled = "";
@@ -187,7 +192,12 @@ async function* _wrapStream(
       if (!delta) continue;
 
       if (delta.content) {
-        recorder.record({ type: "token", token: delta.content, index: tokenIndex++ });
+        recorder.record({
+          type: "token",
+          token: delta.content,
+          index: tokenIndex++,
+          ...(rootSpanId && { parentSpanId: rootSpanId }),
+        });
         assembled += delta.content;
       }
 
@@ -203,17 +213,18 @@ async function* _wrapStream(
       if (chunk.usage) usage = chunk.usage;
     }
   } catch (err) {
-    if (hasSession) {
+    if (hasSession && rootSpanId) {
       recorder.record({
         type: "error",
         message: err instanceof Error ? err.message : String(err),
         stack: err instanceof Error ? err.stack : undefined,
+        parentSpanId: rootSpanId,
       });
     }
     throw err;
   }
 
-  if (!hasSession) return;
+  if (!hasSession || !rootSpanId) return;
 
   for (const [, tc] of toolCallBuffer) {
     if (tc.id) {
@@ -222,6 +233,7 @@ async function* _wrapStream(
         toolName: tc.name,
         toolCallId: tc.id,
         input: _tryParseJson(tc.args),
+        parentSpanId: rootSpanId,
       });
     }
   }
@@ -235,10 +247,16 @@ async function* _wrapStream(
     totalTokens: usage?.total_tokens,
     estimatedCost:
       usage ? estimateCost(model, usage.prompt_tokens, usage.completion_tokens, pricing) : undefined,
+    parentSpanId: rootSpanId,
   });
 }
 
-function _recordCompletion(recorder: FlightRecorder, response: OAIChatCompletion, pricing: PricingOverrides | undefined): void {
+function _recordCompletion(
+  recorder: FlightRecorder,
+  response: OAIChatCompletion,
+  pricing: PricingOverrides | undefined,
+  rootSpanId?: string
+): void {
   const choice = response.choices[0];
   if (!choice) return;
 
@@ -248,6 +266,7 @@ function _recordCompletion(recorder: FlightRecorder, response: OAIChatCompletion
       toolName: tc.function.name,
       toolCallId: tc.id,
       input: _tryParseJson(tc.function.arguments),
+      ...(rootSpanId && { parentSpanId: rootSpanId }),
     });
   }
 
@@ -261,6 +280,7 @@ function _recordCompletion(recorder: FlightRecorder, response: OAIChatCompletion
     estimatedCost: response.usage
       ? estimateCost(response.model, response.usage.prompt_tokens, response.usage.completion_tokens, pricing)
       : undefined,
+    ...(rootSpanId && { parentSpanId: rootSpanId }),
   });
 }
 
