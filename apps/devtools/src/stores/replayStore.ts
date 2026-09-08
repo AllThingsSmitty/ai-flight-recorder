@@ -33,18 +33,43 @@ export const useReplayStore = create<ReplayStore>((set, get) => ({
     prev?.reset();
 
     const engine = new ReplayEngine(session);
+    const pendingEventIds = new Set<string>();
+    let rafId: number | null = null;
+
+    const flushPendingEvents = () => {
+      rafId = null;
+      if (pendingEventIds.size > 0) {
+        set((s) => ({
+          visibleEventIds: new Set([...s.visibleEventIds, ...pendingEventIds]),
+        }));
+        pendingEventIds.clear();
+      }
+    };
+
+    const createUnsubWrapper = (unsub: () => void) => () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      unsub();
+    };
 
     const unsubState = engine.on("stateChange", (state) => {
       set({ replayState: state });
     });
 
     const unsubEvent = engine.on("event", (event) => {
-      set((s) => ({
-        visibleEventIds: new Set([...s.visibleEventIds, event.id]),
-      }));
+      pendingEventIds.add(event.id);
+      if (rafId === null) {
+        rafId = requestAnimationFrame(flushPendingEvents);
+      }
     });
 
     const unsubEnded = engine.on("ended", () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
       set((s) => ({
         visibleEventIds: new Set(session.events.map((e) => e.id)),
         replayState: s.replayState
@@ -58,7 +83,11 @@ export const useReplayStore = create<ReplayStore>((set, get) => ({
       replayState: engine.getState(),
       visibleEventIds: new Set(),
       isReplayMode: true,
-      _unsubs: [unsubState, unsubEvent, unsubEnded],
+      _unsubs: [
+        createUnsubWrapper(unsubState),
+        createUnsubWrapper(unsubEvent),
+        createUnsubWrapper(unsubEnded),
+      ],
     });
   },
 
