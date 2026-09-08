@@ -33,7 +33,7 @@ export const useReplayStore = create<ReplayStore>((set, get) => ({
     prev?.reset();
 
     const engine = new ReplayEngine(session);
-    let pendingEventIds = new Set<string>();
+    const pendingEventIds = new Set<string>();
     let rafId: number | null = null;
 
     const flushPendingEvents = () => {
