@@ -19,6 +19,7 @@
 
 import type { FlightRecorder } from "../FlightRecorder";
 import { estimateCost, type PricingOverrides } from "./pricing";
+import { generateId } from "@ai-flight-recorder/core";
 
 // ── Minimal interface types ───────────────────────────────────────────────────
 
@@ -88,29 +89,32 @@ async function _generateWithRecording(
   pricing: PricingOverrides | undefined
 ): Promise<GeminiGenerateContentResult> {
   const hasSession = recorder.session?.status === "recording";
+  const rootSpanId = hasSession ? generateId() : undefined;
   const promptText = _extractPromptText(request);
 
-  if (hasSession) {
+  if (hasSession && rootSpanId) {
     recorder.record({
       type: "prompt",
       model: model.model,
       prompt: promptText,
+      parentSpanId: rootSpanId,
     });
   }
 
   try {
     const result = await model.generateContent(request);
 
-    if (hasSession) {
-      _recordResult(recorder, model.model, result.response, pricing);
+    if (hasSession && rootSpanId) {
+      _recordResult(recorder, model.model, result.response, pricing, rootSpanId);
     }
     return result;
   } catch (err) {
-    if (hasSession) {
+    if (hasSession && rootSpanId) {
       recorder.record({
         type: "error",
         message: err instanceof Error ? err.message : String(err),
         stack: err instanceof Error ? err.stack : undefined,
+        parentSpanId: rootSpanId,
       });
     }
     throw err;
@@ -124,13 +128,15 @@ async function _generateStreamWithRecording(
   pricing: PricingOverrides | undefined
 ): Promise<GeminiGenerateContentStreamResult> {
   const hasSession = recorder.session?.status === "recording";
+  const rootSpanId = hasSession ? generateId() : undefined;
   const promptText = _extractPromptText(request);
 
-  if (hasSession) {
+  if (hasSession && rootSpanId) {
     recorder.record({
       type: "prompt",
       model: model.model,
       prompt: promptText,
+      parentSpanId: rootSpanId,
     });
   }
 
@@ -138,11 +144,12 @@ async function _generateStreamWithRecording(
   try {
     streamResult = await model.generateContentStream(request);
   } catch (err) {
-    if (hasSession) {
+    if (hasSession && rootSpanId) {
       recorder.record({
         type: "error",
         message: err instanceof Error ? err.message : String(err),
         stack: err instanceof Error ? err.stack : undefined,
+        parentSpanId: rootSpanId,
       });
     }
     throw err;
@@ -155,26 +162,32 @@ async function _generateStreamWithRecording(
     try {
       for await (const chunk of streamResult.stream) {
         yield chunk;
-        if (!hasSession) continue;
+        if (!hasSession || !rootSpanId) continue;
         const text = chunk.response.text();
         if (text) {
-          recorder.record({ type: "token", token: text, index: tokenIndex++ });
+          recorder.record({
+            type: "token",
+            token: text,
+            index: tokenIndex++,
+            parentSpanId: rootSpanId,
+          });
         }
       }
     } catch (err) {
-      if (hasSession) {
+      if (hasSession && rootSpanId) {
         recorder.record({
           type: "error",
           message: err instanceof Error ? err.message : String(err),
           stack: err instanceof Error ? err.stack : undefined,
+          parentSpanId: rootSpanId,
         });
       }
       throw err;
     }
 
-    if (hasSession) {
+    if (hasSession && rootSpanId) {
       const finalResponse = await streamResult.response;
-      _recordResult(recorder, modelName, finalResponse, pricing);
+      _recordResult(recorder, modelName, finalResponse, pricing, rootSpanId);
     }
   }
 
@@ -188,7 +201,8 @@ function _recordResult(
   recorder: FlightRecorder,
   modelName: string,
   response: GeminiGenerateContentResult["response"],
-  pricing: PricingOverrides | undefined
+  pricing: PricingOverrides | undefined,
+  rootSpanId?: string
 ): void {
   const candidate = response.candidates?.[0];
   const usage = response.usageMetadata;
@@ -200,6 +214,7 @@ function _recordResult(
         toolName: part.functionCall.name,
         toolCallId: `gemini-fn-${crypto.randomUUID()}`,
         input: part.functionCall.args,
+        ...(rootSpanId && { parentSpanId: rootSpanId }),
       });
     }
   }
@@ -215,6 +230,7 @@ function _recordResult(
       usage?.promptTokenCount != null && usage?.candidatesTokenCount != null
         ? estimateCost(modelName, usage.promptTokenCount, usage.candidatesTokenCount, pricing)
         : undefined,
+    ...(rootSpanId && { parentSpanId: rootSpanId }),
   });
 }
 
