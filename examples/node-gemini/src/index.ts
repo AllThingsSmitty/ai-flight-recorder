@@ -11,7 +11,7 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 // to GeminiModelLike, but compatible at runtime.
 const model = wrapGeminiModel(
   genAI.getGenerativeModel({ model: "gemini-1.5-pro" }) as unknown as GeminiModelLike,
-  fr.recorder,
+  fr,
 );
 
 fr.startSession({ label: "gemini-demo" });

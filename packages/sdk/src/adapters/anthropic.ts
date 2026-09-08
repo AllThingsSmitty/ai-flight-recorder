@@ -7,21 +7,19 @@
  *   import { FlightRecorder } from "@ai-flight-recorder/sdk";
  *   import { wrapAnthropic } from "@ai-flight-recorder/sdk/adapters/anthropic";
  *
- *   const recorder  = new FlightRecorder();
- *   const anthropic = wrapAnthropic(new Anthropic(), recorder);
- *   recorder.startSession({ label: "my-chat" });
+ *   const fr        = new FlightRecorder();
+ *   const anthropic = wrapAnthropic(new Anthropic(), fr);
+ *   fr.startSession({ label: "my-chat" });
  *
  *   const message = await anthropic.messages.create({ ... });
- *   recorder.endSession();
+ *   fr.endSession();
  *
  * Limitation: streaming wrappers return an AsyncGenerator, not the full
  * Anthropic MessageStream. Use `for await` as normal.
  */
 
-import type { Recorder } from "@ai-flight-recorder/core";
+import type { FlightRecorder } from "../FlightRecorder";
 import { estimateCost, type PricingOverrides } from "./pricing";
-
-type RecorderArg = Recorder & { pricing?: PricingOverrides };
 
 // ── Minimal interface types ───────────────────────────────────────────────────
 
@@ -84,7 +82,7 @@ export interface AnthropicClientLike {
 
 // ── Adapter ───────────────────────────────────────────────────────────────────
 
-export function wrapAnthropic<T extends AnthropicClientLike>(client: T, recorder: RecorderArg): T {
+export function wrapAnthropic<T extends AnthropicClientLike>(client: T, recorder: FlightRecorder): T {
   const { pricing } = recorder;
   return {
     ...client,
@@ -98,7 +96,7 @@ export function wrapAnthropic<T extends AnthropicClientLike>(client: T, recorder
 
 async function _createWithRecording(
   client: AnthropicClientLike,
-  recorder: Recorder,
+  recorder: FlightRecorder,
   params: AnthropicCreateParams,
   pricing: PricingOverrides | undefined
 ): Promise<AnthropicMessageResponse | AsyncGenerator<AnthropicStreamEvent>> {
@@ -155,7 +153,7 @@ async function _createWithRecording(
 
 async function* _wrapStream(
   stream: AsyncIterable<AnthropicStreamEvent>,
-  recorder: Recorder,
+  recorder: FlightRecorder,
   model: string,
   hasSession: boolean,
   pricing: PricingOverrides | undefined
@@ -245,7 +243,7 @@ async function* _wrapStream(
   });
 }
 
-function _recordResponse(recorder: Recorder, response: AnthropicMessageResponse, pricing: PricingOverrides | undefined): void {
+function _recordResponse(recorder: FlightRecorder, response: AnthropicMessageResponse, pricing: PricingOverrides | undefined): void {
   for (const block of response.content) {
     if (block.type === "tool_use" && block.id && block.name) {
       recorder.record({

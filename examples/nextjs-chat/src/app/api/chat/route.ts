@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
   const fr = new FlightRecorder();
   // Swap wrapOpenAI for wrapAnthropic or wrapGeminiModel to use a different provider
-  const openai = wrapOpenAI(new OpenAI() as unknown as OpenAIClientLike, fr.recorder);
+  const openai = wrapOpenAI(new OpenAI() as unknown as OpenAIClientLike, fr);
 
   fr.startSession({ label: "nextjs-chat" });
 

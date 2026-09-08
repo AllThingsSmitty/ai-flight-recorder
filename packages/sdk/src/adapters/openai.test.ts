@@ -1,13 +1,14 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { wrapOpenAI } from "./openai";
-import type { Recorder } from "@ai-flight-recorder/core";
+import { FlightRecorder } from "../FlightRecorder";
 import type { OpenAIClientLike, OAIChatCompletion, OAIChatCompletionChunk } from "./openai";
 
-function makeRecorder(recording = true): Recorder {
+function makeRecorder(recording = true): FlightRecorder {
   return {
     session: recording ? { id: "s1", status: "recording" as const, startedAt: 0, events: [] } : null,
     record: vi.fn(),
-  } as unknown as Recorder;
+    pricing: undefined,
+  } as unknown as FlightRecorder;
 }
 
 function makeCompletion(
