@@ -7,7 +7,7 @@ A transport is called automatically when `endSession()` runs. It receives the co
 
 ## InMemoryTransport
 
-Stores sessions in memory. Useful for testing and short-lived server-side use cases.
+Stores sessions in memory. Good for tests and short-lived server processes.
 
 ```ts
 import { FlightRecorder, InMemoryTransport } from "@ai-flight-recorder/sdk";

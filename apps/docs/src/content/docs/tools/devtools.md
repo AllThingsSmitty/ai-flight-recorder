@@ -25,7 +25,7 @@ A chronological event list showing every recorded event with:
 
 ### Waterfall
 
-A visual latency breakdown showing streaming spans and tool call durations side by side. Useful for spotting where time is spent in a multi-step request.
+A visual latency breakdown showing streaming spans and tool call durations side by side. Shows where time is spent across a multi-step request.
 
 ### Cost Analysis
 
