@@ -2,7 +2,7 @@
 
 > DevTools for AI Applications
 
-AI Flight Recorder is an open-source developer tool for recording, replaying, and inspecting every interaction in an AI application — prompts, streamed tokens, tool calls, latency, and cost — all in one place.
+AI Flight Recorder is an open-source developer tool for recording, replaying, and inspecting every interaction in an AI application: prompts, streamed tokens, tool calls, latency, and cost.
 
 Instead of piecing together console logs after the fact, you drop in a one-line SDK wrapper and get a full DevTools-style timeline you can pause, rewind, and hand off to a teammate as a `.flight` file.
 
@@ -163,7 +163,7 @@ const result = await model.generateContent("Hello");
 fr.endSession();
 ```
 
-All three adapters support streaming. Wrap your existing client and all calls are recorded automatically.
+All three adapters support streaming.
 
 ### Plugins
 

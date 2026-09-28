@@ -48,7 +48,7 @@ Open the `.flight` file in VS Code — it opens automatically in the Flight Reco
 
 ## Supported providers
 
-The SDK supports OpenAI, Anthropic, and Google Gemini out of the box. See the [SDK documentation](https://www.npmjs.com/package/@ai-flight-recorder/sdk) for adapter usage.
+The SDK supports OpenAI, Anthropic, and Google Gemini. See the [SDK documentation](https://www.npmjs.com/package/@ai-flight-recorder/sdk) for adapter usage.
 
 ## Links
 

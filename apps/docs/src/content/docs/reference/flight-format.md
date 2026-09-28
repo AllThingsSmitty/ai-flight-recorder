@@ -3,7 +3,7 @@ title: .flight Format
 description: The portable session file format used by AI Flight Recorder.
 ---
 
-A `.flight` file is a JSON document with a version envelope wrapping a serialized `Session`. It's designed to be human-readable, portable, and stable across versions.
+A `.flight` file is a JSON document with a version envelope wrapping a serialized `Session`. It's human-readable, portable, and stable across versions.
 
 ## Structure
 

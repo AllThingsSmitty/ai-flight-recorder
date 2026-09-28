@@ -3,7 +3,7 @@ title: OpenTelemetry Export
 description: Export AI Flight Recorder sessions as OTLP trace payloads for ingestion into any OpenTelemetry-compatible backend.
 ---
 
-`toOtlp` converts a recorded `Session` into a valid [OTLP/JSON](https://opentelemetry.io/docs/specs/otlp/) trace payload. Each session becomes a trace, and each event becomes a span, making AI interactions visible in tools like Jaeger, Tempo, Honeycomb, or any OTLP-compatible backend.
+`toOtlp` converts a recorded `Session` into a valid [OTLP/JSON](https://opentelemetry.io/docs/specs/otlp/) trace payload. Each session becomes a trace and each event becomes a span, so your AI interactions show up in tools like Jaeger, Tempo, Honeycomb, or any OTLP-compatible backend.
 
 ## Usage
 

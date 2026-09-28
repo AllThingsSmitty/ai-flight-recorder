@@ -3,7 +3,7 @@ title: Adapters
 description: Drop-in wrappers for OpenAI, Anthropic, and Google Gemini.
 ---
 
-Adapters intercept a provider client and record every call automatically — prompts, streamed tokens, tool calls, and completions. No manual `fr.record()` calls needed.
+Adapters intercept a provider client and record every call automatically — prompts, streamed tokens, tool calls, and completions.
 
 All adapters support both streaming and non-streaming requests.
 
