@@ -1,6 +1,6 @@
 # Contribution Guidelines
 
-Please note that this project is released with a Contributor Code of Conduct. By participating in this project, you agree to abide by its terms.
+This project follows a Contributor Code of Conduct. By participating, you agree to its terms.
 
 ## Contents
 
@@ -80,6 +80,4 @@ The DevTools app is in `apps/devtools/`. It uses Next.js 15, React 19, Tailwind 
 
 Sometimes a maintainer will ask you to update your pull request before it can be merged. This is usually due to missing tests, lint errors, scope creep, or because the contribution does not follow the guidelines above.
 
-If you're asked to make changes, simply update your branch and push the new commits to the same pull request.
-
-Thank you for your contribution!
+If you're asked to make changes, update your branch and push the new commits to the same pull request.
