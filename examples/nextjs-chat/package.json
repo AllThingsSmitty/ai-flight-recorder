@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ai-flight-recorder/sdk": "workspace:*",
-    "next": "^15.5.24",
+    "next": "^15.5.27",
     "openai": "^4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

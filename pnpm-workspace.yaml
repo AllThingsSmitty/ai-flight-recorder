@@ -6,3 +6,15 @@ packages:
 onlyBuiltDependencies:
   - esbuild
   - sharp
+
+overrides:
+  "next>postcss": "^8.5.23"
+  "brace-expansion@1": "^1.1.21"
+  "brace-expansion@5": "^5.0.12"
+  "devalue": "^5.9.4"
+  "js-yaml@4": "^4.3.2"
+  "smol-toml": "^1.9.0"
+  "browserslist": "^4.29.3"
+  "baseline-browser-mapping": "^2.11.27"
+  "source-map-js": "^1.2.2"
+  "postcss-selector-parser@6": "^7.1.6"
